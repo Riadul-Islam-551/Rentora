@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import rentoraLogo from "../../app/assets/logo.png";
+import rentoraLogo from "../../../app/assets/logo.png";
 
 import { ModeToggle } from "./ModeToggle";
 import ScrollNavWrapper from "./ScrollNavWrapper";
