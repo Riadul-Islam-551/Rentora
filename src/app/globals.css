@@ -54,7 +54,7 @@
 
 :root {
   /* Core Base Colors */
-  --background: #fafcfe;
+  --background: #e8f4ff;
   --foreground: #09121c;
 
   --card: #ffffff;
@@ -105,7 +105,7 @@
 
 .dark {
   /* Dark Mode Base Colors */
-  --background: #040a11;
+  --background: #06101b;
   --foreground: #f5f8fa;
 
   --card: #09121c;
