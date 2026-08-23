@@ -5,6 +5,7 @@ import { Menu, X } from "lucide-react";
 
 import { Button } from "../../ui/button";
 import { LoginPage } from "../authentication/Login";
+import { BusinessAccountPage } from "../authentication/BusinessAccount";
 
 export default function MobileActions() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,17 +58,25 @@ function ActionButtons({ orientation = "horizontal", onAction }) {
 
   return (
     <div
-      className={
-        isVertical
-          ? "flex flex-col gap-2"
-          : "flex items-center gap-2"
-      }
+      className={isVertical ? "flex flex-col gap-2" : "flex items-center gap-2"}
     >
+      {/* Create business account */}
+      <BusinessAccountPage
+        trigger={
+          <Button
+            variant="outline"
+            className={isVertical ? "w-full justify-start" : ""}
+            onClick={onAction}
+          >
+            Create Business Account
+          </Button>
+        }
+      />
+      
       {/* Login */}
       <LoginPage
         trigger={
           <Button
-            variant="outline"
             className={isVertical ? "w-full justify-start" : ""}
             onClick={onAction}
           >
@@ -77,12 +86,12 @@ function ActionButtons({ orientation = "horizontal", onAction }) {
       />
 
       {/* Create Business Account */}
-      <Button
+      {/* <Button
         className={isVertical ? "w-full justify-start" : ""}
         onClick={onAction}
       >
         Create Business Account
-      </Button>
+      </Button> */}
     </div>
   );
 }
