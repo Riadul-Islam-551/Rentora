@@ -3,10 +3,10 @@ import Navbar from "@/components/shared/Navbar";
 
 const PublicLayoutPage = ({ children }) => {
   return (
-    <div>
+    <section >
       <Navbar></Navbar>
       <main>{children}</main>
-    </div>
+    </section>
   );
 };
 

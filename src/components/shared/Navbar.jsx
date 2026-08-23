@@ -6,7 +6,7 @@ import { ModeToggle } from "./ModeToggle";
 
 export default function Navbar() {
   return (
-    <section className="sticky top-0 z-50 px-2 py-5 shadow">
+    <section className="sticky top-0 z-50 px-2 py-5 shadow bg-background ">
       <div className="container mx-auto flex items-center justify-between">
         <div>
           <Image src={rentoraLogo} alt="rentora logo" width={40} height={40} />
