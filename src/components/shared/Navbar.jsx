@@ -3,6 +3,7 @@ import React from "react";
 import rentoraLogo from "../../app/assets/logo.png";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { ModeToggle } from "./ModeToggle";
 
 const Navbar = () => {
   return (
@@ -20,6 +21,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div>
+          <ModeToggle></ModeToggle>
           <Button>Log in</Button>
         </div>
       </div>
