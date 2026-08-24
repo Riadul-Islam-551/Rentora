@@ -27,11 +27,11 @@ export default function Navbar() {
       </nav>
 
       {/* Right Actions */}
-      <div className="flex items-center gap-2">
-        {/* Desktop + Mobile actions/menu */}
-        <MobileActions />{" "}
+      <div className="flex md:flex-row-reverse items-center gap-2">
         {/* This remains completely independent from the menu */}
         <ModeToggle />
+        {/* Desktop + Mobile actions/menu */}
+        <MobileActions />{" "}
       </div>
     </ScrollNavWrapper>
   );

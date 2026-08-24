@@ -1,11 +1,12 @@
+import Footer from "@/components/shared/footer/Footer";
 import Navbar from "@/components/shared/nav/Navbar";
-
 
 const PublicLayoutPage = ({ children }) => {
   return (
-    <section >
+    <section>
       <Navbar></Navbar>
-      <main>{children}</main>
+      {children}
+      {/* <Footer></Footer> */}
     </section>
   );
 };
