@@ -27,6 +27,7 @@ export default async function Navbar() {
         <Link href="/properties" className="cursor-pointer p-2">
           All Properties
         </Link>
+        {user && <Link href="/dashboard" className="cursor-pointer p-2">Dashboard</Link>}
       </nav>
 
       {/* Right Actions */}
