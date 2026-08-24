@@ -1,35 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 
 export default function ScrollNavWrapper({ children }) {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <section
-      className={cn(
-        "sticky top-0 z-50 px-2 transition-all duration-300 ease-in-out",
-        isScrolled ? "py-3" : "py-5",
-      )}
+    <div
+      className={`
+        sticky top-0 z-50 w-full
+        border-b
+        transition-all duration-300
+        ${
+          scrolled
+            ? "border-border/60 bg-background/80 shadow-sm backdrop-blur-xl"
+            : "border-transparent bg-background"
+        }
+      `}
     >
-      <div
-        className={cn(
-          "mx-auto flex items-center justify-between transition-all duration-200 ease-in-out",
-          isScrolled
-            ? "container max-w-container rounded-full border bg-background/60 px-7 py-2 shadow-lg backdrop-blur-md"
-            : "container bg-background px-2 py-0 shadow-none",
-        )}
-      >
+      <div className="mx-auto flex min-h-[68px] max-w-7xl items-center px-4 sm:px-6 lg:px-8">
         {children}
       </div>
-    </section>
+    </div>
   );
 }

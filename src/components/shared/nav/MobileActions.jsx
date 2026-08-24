@@ -13,7 +13,7 @@ export default function MobileActions() {
   return (
     <div className="relative">
       {/* Desktop Actions */}
-      <div className="hidden items-center gap-2 md:flex">
+      <div className="hidden items-center gap-2 lg:flex">
         <ActionButtons />
       </div>
 
@@ -21,7 +21,7 @@ export default function MobileActions() {
       <Button
         variant="ghost"
         size="icon"
-        className="md:hidden"
+        className="lg:hidden"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? "Close menu" : "Open menu"}
         aria-expanded={isOpen}
@@ -36,7 +36,7 @@ export default function MobileActions() {
           rounded-xl border border-border
           bg-background p-2 shadow-lg
           transition-all duration-200
-          md:hidden
+          lg:hidden
           ${
             isOpen
               ? "visible translate-y-0 opacity-100"
