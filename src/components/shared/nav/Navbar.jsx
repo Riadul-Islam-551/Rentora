@@ -7,11 +7,14 @@ import { ModeToggle } from "./ModeToggle";
 import ScrollNavWrapper from "./ScrollNavWrapper";
 import MobileActions from "./MobileActions";
 
-import { getLoggedInUser } from "@/lib/core/session";
+import { getLoggedInUser, logOutUser } from "@/lib/core/session";
 import ActiveNavLink from "./ActiveNavLink";
+import { Button } from "@/components/ui/button";
+import LogOutUser from "../authentication/LogOutUser";
 
 export default async function Navbar() {
   const user = await getLoggedInUser();
+  console.log("log in user", user);
 
   const navItems = [
     {
@@ -77,7 +80,7 @@ export default async function Navbar() {
         {/* Right Actions */}
         <div className="flex lg:flex-row-reverse  shrink-0 items-center gap-2">
           <ModeToggle />
-          <MobileActions />
+          {user ? <LogOutUser></LogOutUser> : <MobileActions />}
         </div>
       </header>
     </ScrollNavWrapper>

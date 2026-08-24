@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { Loader2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import {
   Field,
   FieldDescription,
@@ -10,6 +14,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
+
 import {
   Sheet,
   SheetClose,
@@ -20,11 +25,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { FcGoogle } from "react-icons/fc";
 
 import { RegistrationPage } from "./Registration";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/lib/core/toastContext";
 
 export function LoginPage({ trigger }) {
+  const router = useRouter();
+  const { toast } = useToast();
   const [loginOpen, setLoginOpen] = useState(false);
   const [registrationOpen, setRegistrationOpen] = useState(false);
 
@@ -39,20 +48,24 @@ export function LoginPage({ trigger }) {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  // ------------------------------------------
+  // --------------------------------------------------
   // Validation
-  // ------------------------------------------
+  // --------------------------------------------------
 
   const validateEmail = (email) => {
-    if (!email.trim()) {
-      return "Email is required";
+    const value = email.trim();
+
+    if (!value) {
+      return "Email is required.";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailRegex.test(email)) {
-      return "Please enter a valid email address";
+    if (!emailRegex.test(value)) {
+      return "Please enter a valid email address.";
     }
 
     return "";
@@ -60,19 +73,15 @@ export function LoginPage({ trigger }) {
 
   const validatePassword = (password) => {
     if (!password) {
-      return "Password is required";
+      return "Password is required.";
     }
 
     if (password.length < 8) {
-      return "Password must be at least 8 characters";
+      return "Password must be at least 8 characters.";
     }
 
     return "";
   };
-
-  // ------------------------------------------
-  // Current errors
-  // ------------------------------------------
 
   const errors = {
     email: validateEmail(formData.email),
@@ -80,22 +89,26 @@ export function LoginPage({ trigger }) {
   };
 
   const isFormValid =
-    !errors.email && !errors.password && formData.email && formData.password;
+    formData.email.trim() !== "" &&
+    formData.password !== "" &&
+    !errors.email &&
+    !errors.password;
 
-  // ------------------------------------------
-  // Handle input changes
-  // ------------------------------------------
+  // --------------------------------------------------
+  // Input handlers
+  // --------------------------------------------------
 
   const handleChange = (field, value) => {
     setFormData((previous) => ({
       ...previous,
       [field]: value,
     }));
-  };
 
-  // ------------------------------------------
-  // Handle blur
-  // ------------------------------------------
+    // Remove server error as soon as the user edits the form.
+    if (submitError) {
+      setSubmitError("");
+    }
+  };
 
   const handleBlur = (field) => {
     setTouched((previous) => ({
@@ -104,18 +117,37 @@ export function LoginPage({ trigger }) {
     }));
   };
 
-  // ------------------------------------------
-  // Handle login
-  // ------------------------------------------
+  // --------------------------------------------------
+  // Reset form
+  // --------------------------------------------------
+
+  const resetLoginForm = () => {
+    setFormData({
+      email: "",
+      password: "",
+    });
+
+    setTouched({
+      email: false,
+      password: false,
+    });
+
+    setSubmitError("");
+  };
+
+  // --------------------------------------------------
+  // Login
+  // --------------------------------------------------
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Show all validation errors
     setTouched({
       email: true,
       password: true,
     });
+
+    setSubmitError("");
 
     if (!isFormValid) {
       return;
@@ -124,167 +156,298 @@ export function LoginPage({ trigger }) {
     try {
       setIsSubmitting(true);
 
-      console.log("Login data:", formData);
-
-      // ------------------------------------------
-      // API request goes here
-      // ------------------------------------------
-
-      // const response = await fetch("/api/login", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
-
-      // const data = await response.json();
-
-      // if (!response.ok) {
-      //   throw new Error(data.message || "Login failed");
-      // }
-
-      // ------------------------------------------
-      // Successful login
-      // ------------------------------------------
-
-      setFormData({
-        email: "",
-        password: "",
+      const { data, error } = await authClient.signIn.email({
+        email: formData.email.trim().toLowerCase(),
+        password: formData.password,
       });
 
-      setTouched({
-        email: false,
-        password: false,
-      });
+      if (error) {
+        console.error("Better Auth login error:", error);
 
+        setSubmitError(
+          error.message ||
+            "Unable to log in. Please check your email and password.",
+        );
+
+        return;
+      }
+      toast({
+        message: "You Sign in successfully !",
+        type: "success",
+      });
+      router.refresh();
+      console.log("Login successful:", data);
+
+      resetLoginForm();
       setLoginOpen(false);
+
+      // If you want to redirect after login:
+      // window.location.href = "/dashboard";
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Login failed:", error);
+
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while logging in.",
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleGoogleSignin = () => {
-    console.log("Google button is clicked ")
-  }
-  // ------------------------------------------
+  // --------------------------------------------------
+  // Google login
+  // --------------------------------------------------
+
+  const handleGoogleSignin = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setSubmitError("");
+
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+
+      if (error) {
+        console.error("Google login error:", error);
+
+        setSubmitError(error.message || "Unable to continue with Google.");
+      }
+    } catch (error) {
+      console.error("Google login failed:", error);
+
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Unable to continue with Google.",
+      );
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
+  // --------------------------------------------------
   // Open registration
-  // ------------------------------------------
+  // --------------------------------------------------
 
   const handleRegistration = () => {
     setLoginOpen(false);
+    setRegistrationOpen(true);
+  };
 
-    setTimeout(() => {
-      setRegistrationOpen(true);
-    }, 150);
+  // --------------------------------------------------
+  // Login sheet closed
+  // --------------------------------------------------
+
+  const handleLoginOpenChange = (open) => {
+    setLoginOpen(open);
+
+    if (!open) {
+      resetLoginForm();
+    }
   };
 
   return (
     <>
-      {/* Login Sheet */}
-      <Sheet open={loginOpen} onOpenChange={setLoginOpen}>
+      {/* ==================================================
+          LOGIN SHEET
+      ================================================== */}
+
+      <Sheet open={loginOpen} onOpenChange={handleLoginOpenChange}>
         {trigger && <SheetTrigger render={trigger} />}
 
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Log in</SheetTitle>
+        <SheetContent side="right" className="w-full sm:max-w-md">
+          <SheetHeader className="border-b pb-5">
+            <SheetTitle className="text-2xl font-semibold">
+              Welcome back
+            </SheetTitle>
 
             <SheetDescription>
-              Enter your account information to continue.
+              Log in to your account to continue exploring properties.
             </SheetDescription>
           </SheetHeader>
 
-          {/* Login Form */}
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col flex-1  gap-6 px-4 pb-6"
+            noValidate
+            className="flex flex-1 flex-col overflow-y-auto"
           >
-            <FieldGroup>
-              {/* Email */}
-              <Field data-invalid={touched.email && !!errors.email}>
-                <FieldLabel htmlFor="login-email">Email</FieldLabel>
+            <div className="flex-1 px-4 py-6">
+              <FieldGroup>
+                {/* =========================================
+                    EMAIL
+                ========================================= */}
 
-                <Input
-                  id="login-email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(event) =>
-                    handleChange("email", event.target.value)
-                  }
-                  onBlur={() => handleBlur("email")}
-                  aria-invalid={touched.email && !!errors.email}
-                  placeholder="john@example.com"
-                  autoComplete="email"
-                />
+                <Field data-invalid={touched.email && Boolean(errors.email)}>
+                  <FieldLabel htmlFor="login-email">Email address</FieldLabel>
 
-                <FieldDescription>
-                  Enter the email associated with your account.
-                </FieldDescription>
+                  <Input
+                    id="login-email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(event) =>
+                      handleChange("email", event.target.value)
+                    }
+                    onBlur={() => handleBlur("email")}
+                    aria-invalid={touched.email && Boolean(errors.email)}
+                    placeholder="john@example.com"
+                    autoComplete="email"
+                    disabled={isSubmitting || isGoogleLoading}
+                  />
 
-                {touched.email && errors.email && (
-                  <FieldError errors={[errors.email]} />
-                )}
-              </Field>
+                  <FieldDescription>
+                    Enter the email address associated with your account.
+                  </FieldDescription>
 
-              {/* Password */}
-              <Field data-invalid={touched.password && !!errors.password}>
-                <FieldLabel htmlFor="login-password">Password</FieldLabel>
+                  {touched.email && errors.email && (
+                    <FieldError errors={[errors.email]} />
+                  )}
+                </Field>
 
-                <Input
-                  id="login-password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={(event) =>
-                    handleChange("password", event.target.value)
-                  }
-                  onBlur={() => handleBlur("password")}
-                  aria-invalid={touched.password && !!errors.password}
-                  placeholder="••••••••"
-                  autoComplete="current-password"
-                />
+                {/* =========================================
+                    PASSWORD
+                ========================================= */}
 
-                <FieldDescription>
-                  Your password must be at least 8 characters.
-                </FieldDescription>
-
-                {touched.password && errors.password && (
-                  <FieldError errors={[errors.password]} />
-                )}
-              </Field>
-
-              {/* Registration */}
-              <div className="text-sm text-muted-foreground">
-                Don&apos;t have an account?{" "}
-                <button
-                  type="button"
-                  onClick={handleRegistration}
-                  className="font-medium text-primary underline-offset-4 hover:underline"
+                <Field
+                  data-invalid={touched.password && Boolean(errors.password)}
                 >
-                  Create one
-                </button>
-              </div>
-              <div>
-                <Button onClick={handleGoogleSignin} variant="outline" className="w-full py-2 "><FcGoogle /> <span>Signin with Google</span></Button>
-              </div>
-            </FieldGroup>
+                  <div className="flex items-center justify-between">
+                    <FieldLabel htmlFor="login-password">Password</FieldLabel>
 
-            {/* Actions */}
-            <SheetFooter className='px-0 '>
-              <Button
-                type="submit"
-                disabled={!isFormValid || isSubmitting}
-                className="w-full"
-              >
-                {isSubmitting ? "Logging in..." : "Log in"}
-              </Button>
+                    <button
+                      type="button"
+                      className="text-xs font-medium text-primary hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
 
+                  <Input
+                    id="login-password"
+                    name="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={(event) =>
+                      handleChange("password", event.target.value)
+                    }
+                    onBlur={() => handleBlur("password")}
+                    aria-invalid={touched.password && Boolean(errors.password)}
+                    placeholder="••••••••"
+                    autoComplete="current-password"
+                    disabled={isSubmitting || isGoogleLoading}
+                  />
+
+                  <FieldDescription>
+                    Your password must contain at least 8 characters.
+                  </FieldDescription>
+
+                  {touched.password && errors.password && (
+                    <FieldError errors={[errors.password]} />
+                  )}
+                </Field>
+
+                {/* =========================================
+                    SERVER ERROR
+                ========================================= */}
+
+                {submitError && (
+                  <div
+                    role="alert"
+                    className="rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2.5 text-sm text-destructive"
+                  >
+                    {submitError}
+                  </div>
+                )}
+
+                {/* =========================================
+                    LOGIN BUTTON
+                ========================================= */}
+
+                <Button
+                  type="submit"
+                  disabled={!isFormValid || isSubmitting || isGoogleLoading}
+                  className="w-full"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Logging in...
+                    </>
+                  ) : (
+                    "Log in"
+                  )}
+                </Button>
+
+                {/* =========================================
+                    DIVIDER
+                ========================================= */}
+
+                <div className="relative my-1">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-3 text-muted-foreground">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
+
+                {/* =========================================
+                    GOOGLE
+                ========================================= */}
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleGoogleSignin}
+                  disabled={isSubmitting || isGoogleLoading}
+                  className="w-full"
+                >
+                  {isGoogleLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <FcGoogle className="mr-2 h-5 w-5" />
+                  )}
+
+                  {isGoogleLoading ? "Connecting..." : "Continue with Google"}
+                </Button>
+
+                {/* =========================================
+                    REGISTRATION
+                ========================================= */}
+
+                <div className="pt-2 text-center text-sm text-muted-foreground">
+                  Don&apos;t have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={handleRegistration}
+                    disabled={isSubmitting || isGoogleLoading}
+                    className="font-semibold text-primary underline-offset-4 hover:underline disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    Create an account
+                  </button>
+                </div>
+              </FieldGroup>
+            </div>
+
+            {/* =========================================
+                FOOTER
+            ========================================= */}
+
+            <SheetFooter className="border-t px-4 py-4">
               <SheetClose
                 render={
-                  <Button type="button" variant="outline" className="w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full"
+                    disabled={isSubmitting || isGoogleLoading}
+                  >
                     Cancel
                   </Button>
                 }
@@ -294,7 +457,10 @@ export function LoginPage({ trigger }) {
         </SheetContent>
       </Sheet>
 
-      {/* Registration Sheet */}
+      {/* ==================================================
+          REGISTRATION SHEET
+      ================================================== */}
+
       <RegistrationPage
         open={registrationOpen}
         onOpenChange={setRegistrationOpen}

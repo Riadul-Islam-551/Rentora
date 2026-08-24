@@ -84,14 +84,6 @@ function ActionButtons({ orientation = "horizontal", onAction }) {
           </Button>
         }
       />
-
-      {/* Create Business Account */}
-      {/* <Button
-        className={isVertical ? "w-full justify-start" : ""}
-        onClick={onAction}
-      >
-        Create Business Account
-      </Button> */}
     </div>
   );
 }

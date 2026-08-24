@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
+import { authClient } from "../auth-client";
 
 export const getLoggedInUser = async () => {
   const session = await auth.api.getSession({
@@ -7,4 +8,8 @@ export const getLoggedInUser = async () => {
   });
 
   return session?.user;
+};
+
+export const logOutUser = async () => {
+  await authClient.signOut();
 };
