@@ -1,6 +1,7 @@
-import {  Roboto } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ToastProvider } from "@/lib/toastContext";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -13,9 +14,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 // });
 
 const roboto = Roboto({
-  weight: '400',
-  subsets: ['latin'],
-})
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Rentora",
@@ -25,11 +26,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={roboto.className}
-    >
+    <html lang="en" suppressHydrationWarning className={roboto.className}>
       <body className="min-h-full">
         <ThemeProvider
           attribute="class"
@@ -37,7 +34,7 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>
       </body>
     </html>
