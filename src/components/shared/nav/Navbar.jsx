@@ -6,8 +6,11 @@ import rentoraLogo from "../../../app/assets/logo.png";
 import { ModeToggle } from "./ModeToggle";
 import ScrollNavWrapper from "./ScrollNavWrapper";
 import MobileActions from "./MobileActions";
+import { getLoggedInUser } from "@/lib/core/session";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const user = await getLoggedInUser();
+  console.log("logged in user", user);
   return (
     <ScrollNavWrapper>
       {/* Logo */}

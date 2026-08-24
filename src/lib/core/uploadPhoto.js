@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { supabase } from "../supabase";
 
 export async function uploadPhoto(file, userId) {
   if (!(file instanceof File)) {

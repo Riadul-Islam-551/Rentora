@@ -26,10 +26,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { uploadPhoto } from "@/lib/uploadPhoto";
+import { uploadPhoto } from "@/lib/core/uploadPhoto";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
-import { useToast } from "@/lib/toastContext";
+import { useToast } from "@/lib/core/toastContext";
 
 export function RegistrationPage({ trigger, open, onOpenChange }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
