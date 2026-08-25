@@ -4,9 +4,9 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border bg-background text-foreground transition-colors duration-300">
+    <footer className="border-t border-primary/30  bg-background text-foreground transition-colors duration-300">
       {/* Top Footer Call-to-Action Banner */}
-      <div className="border-b border-border bg-secondary/40 py-8">
+      <div className="border-b border-border bg-secondary py-8">
         <div className="container mx-auto px-4 md:px-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div>
@@ -205,7 +205,7 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-border bg-card/50 py-6 text-center text-sm text-muted-foreground">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row md:px-8">
-          <p>© 2026 Nestify Inc. All rights reserved.</p>
+          <p>© 2026 Rentora Inc. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link
               href="/terms"

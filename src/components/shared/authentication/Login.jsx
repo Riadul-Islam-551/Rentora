@@ -30,12 +30,15 @@ import { RegistrationPage } from "./Registration";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/lib/core/toastContext";
+import { EyeOff } from "lucide-react";
+import { Eye } from "lucide-react";
 
 export function LoginPage({ trigger }) {
   const router = useRouter();
   const { toast } = useToast();
   const [loginOpen, setLoginOpen] = useState(false);
   const [registrationOpen, setRegistrationOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -133,6 +136,7 @@ export function LoginPage({ trigger }) {
     });
 
     setSubmitError("");
+    setShowPassword(false);
   };
 
   // --------------------------------------------------
@@ -325,20 +329,37 @@ export function LoginPage({ trigger }) {
                     </button>
                   </div>
 
-                  <Input
-                    id="login-password"
-                    name="password"
-                    type="password"
-                    value={formData.password}
-                    onChange={(event) =>
-                      handleChange("password", event.target.value)
-                    }
-                    onBlur={() => handleBlur("password")}
-                    aria-invalid={touched.password && Boolean(errors.password)}
-                    placeholder="••••••••"
-                    autoComplete="current-password"
-                    disabled={isSubmitting || isGoogleLoading}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="login-password"
+                      name="password"
+                      type={showPassword ? "text" : "password"} // Dynamic type toggle
+                      value={formData.password}
+                      onChange={(event) =>
+                        handleChange("password", event.target.value)
+                      }
+                      onBlur={() => handleBlur("password")}
+                      aria-invalid={
+                        touched.password && Boolean(errors.password)
+                      }
+                      placeholder="••••••••"
+                      autoComplete="current-password"
+                      disabled={isSubmitting || isGoogleLoading}
+                      className="pr-10" // Added right padding so text doesn't overlap the icon
+                    />
+                    <button
+                      type="button"
+                      tabIndex={-1}
+                      onClick={() => setShowPassword((previous) => !previous)}
+                      disabled={isSubmitting || isGoogleLoading}
+                      className="absolute right-0 top-0 flex h-full w-10 items-center justify-center text-muted-foreground hover:text-foreground"
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
 
                   <FieldDescription>
                     Your password must contain at least 8 characters.
