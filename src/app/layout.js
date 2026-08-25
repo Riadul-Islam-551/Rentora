@@ -1,6 +1,6 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/lib/theme-provider";
 import { ToastProvider } from "@/lib/core/toastContext";
 
 // const geistSans = Geist({

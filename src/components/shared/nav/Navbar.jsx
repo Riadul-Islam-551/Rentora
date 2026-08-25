@@ -11,6 +11,7 @@ import { getLoggedInUser, logOutUser } from "@/lib/core/session";
 import ActiveNavLink from "./ActiveNavLink";
 import { Button } from "@/components/ui/button";
 import LogOutUser from "../authentication/LogOutUser";
+import { AvatarWithBadge } from "./AvatarWithBadge";
 
 export default async function Navbar() {
   const user = await getLoggedInUser();
@@ -81,6 +82,7 @@ export default async function Navbar() {
         <div className="flex lg:flex-row-reverse  shrink-0 items-center gap-2">
           <ModeToggle />
           {user ? <LogOutUser></LogOutUser> : <MobileActions />}
+          {user ? <AvatarWithBadge user={user}></AvatarWithBadge> : ""}
         </div>
       </header>
     </ScrollNavWrapper>
