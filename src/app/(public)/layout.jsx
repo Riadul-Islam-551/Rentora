@@ -6,7 +6,7 @@ const PublicLayoutPage = ({ children }) => {
     <section>
       <Navbar></Navbar>
       {children}
-      {/* <Footer></Footer> */}
+      <Footer></Footer>
     </section>
   );
 };

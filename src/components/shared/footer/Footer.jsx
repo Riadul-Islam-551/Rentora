@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div>
               <h3 className="text-lg font-semibold text-foreground">
-                Subscribe to Nestify Properties
+                Subscribe to Rentora Properties
               </h3>
               <p className="text-sm text-muted-foreground">
                 Get notified about new verified properties and rental price
@@ -20,7 +20,7 @@ export default function Footer() {
             </div>
             <form
               className="flex w-full max-w-md items-center gap-2"
-              onSubmit={(e) => e.preventDefault()}
+              // onSubmit={(e) => e.preventDefault()}
             >
               <input
                 type="email"
@@ -50,7 +50,7 @@ export default function Footer() {
               className="flex items-center gap-2 font-bold text-xl text-primary"
             >
               <Building2 className="h-6 w-6 text-primary" />
-              <span>Nestify</span>
+              <span>Rentora</span>
             </Link>
             <p className="max-w-sm text-sm text-muted-foreground leading-relaxed">
               Connecting tenants and property owners through a transparent,
@@ -195,7 +195,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary shrink-0" />
-                <span>support@nestify.com</span>
+                <span>support@rentora.com</span>
               </li>
             </ul>
           </div>

@@ -41,7 +41,7 @@ export default async function Navbar() {
 
   return (
     <ScrollNavWrapper>
-      <header className="flex w-full items-center justify-between gap-4">
+      <header className="flex w-full items-center justify-between gap-4 px-1 md:px-3 ">
         {/* Logo */}
         <Link
           href="/"
