@@ -30,13 +30,14 @@ import { uploadPhoto } from "@/lib/core/uploadPhoto";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import { useToast } from "@/lib/core/toastContext";
+import { useRouter } from "next/navigation";
 
 export function RegistrationPage({ trigger, open, onOpenChange }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [submitError, setSubmitError] = useState("");
-
+  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm({
@@ -84,6 +85,7 @@ export function RegistrationPage({ trigger, open, onOpenChange }) {
 
         console.log("Registration successful:", data);
 
+        router.refresh();
         form.reset();
         setPhotoPreview(null);
         setSubmitError("");
