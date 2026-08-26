@@ -67,8 +67,8 @@ export const ToastProvider = ({ children }) => {
     switch (type) {
       case "success":
         return {
-          bg: "bg-card border-emerald-500/30 text-emerald-600 dark:text-emerald-400",
-          icon: <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0" />,
+          bg: "border-success",
+          icon: <CheckCircle2 className="h-5 w-5 text-success shrink-0" />,
         };
       case "error":
         return {
@@ -115,7 +115,7 @@ export const ToastProvider = ({ children }) => {
               return (
                 <div
                   key={item.id}
-                  className={`pointer-events-auto flex items-center gap-3 w-80 max-w-[calc(100vw-2rem)] p-4 rounded-lg border bg-card text-foreground shadow-lg transition-all transform animate-in fade-in slide-in-from-top-2 duration-200 ${style.bg}`}
+                  className={`pointer-events-auto flex items-center gap-3 w-80 max-w-[calc(100vw-2rem)] p-4 rounded-lg border-2 text-foreground shadow-lg transition-all transform animate-in fade-in slide-in-from-top-2 duration-200 ${style.bg}`}
                 >
                   {style.icon}
                   <span className="text-sm font-medium flex-1 text-foreground">
@@ -123,7 +123,7 @@ export const ToastProvider = ({ children }) => {
                   </span>
                   <button
                     onClick={() => removeToast(item.id)}
-                    className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md"
+                    className="p-1 rounded-md"
                   >
                     <X className="h-4 w-4" />
                   </button>

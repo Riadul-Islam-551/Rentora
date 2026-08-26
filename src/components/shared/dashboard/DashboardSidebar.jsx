@@ -73,7 +73,7 @@ const roleLinks = {
     },
     {
       title: "Add Property",
-      href: "/dashboard/owner/properties/new",
+      href: "/dashboard/owner/newProperty",
       icon: FileText,
     },
     {
@@ -81,11 +81,11 @@ const roleLinks = {
       href: "/dashboard/owner/bookings",
       icon: CalendarDays,
     },
-    {
-      title: "Payments",
-      href: "/dashboard/owner/payments",
-      icon: CreditCard,
-    },
+    // {
+    //   title: "Payments",
+    //   href: "/dashboard/owner/payments",
+    //   icon: CreditCard,
+    // },
   ],
 
   admin: [
@@ -156,10 +156,13 @@ export default function DashboardSidebar({ user }) {
             >
               <Link href="/" className="flex items-center justify-start gap-2">
                 {/* Logo */}
-                <Image src={rentoraLogo} alt="Go to Home" width={23} height={23}></Image>
-                <div
-                  className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden"
-                >
+                <Image
+                  src={rentoraLogo}
+                  alt="Go to Home"
+                  width={23}
+                  height={23}
+                ></Image>
+                <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
                   <span className="truncate text-xs capitalize text-muted-foreground">
                     {role || "user"} dashboard
                   </span>
@@ -197,13 +200,15 @@ export default function DashboardSidebar({ user }) {
                         group-data-[collapsible=icon]:size-8!
                         group-data-[collapsible=icon]:p-0!
                         group-data-[collapsible=icon]:justify-center
+                        my-1
                       "
                     >
-                      <Link href={item.href} className="flex items-center gap-3">
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-3 w-full py-2 "
+                      >
                         <Icon className="size-4 shrink-0" />
-                        <span
-                          className="group-data-[collapsible=icon]:hidden"
-                        >
+                        <span className="group-data-[collapsible=icon]:hidden">
                           {item.title}
                         </span>
                       </Link>
