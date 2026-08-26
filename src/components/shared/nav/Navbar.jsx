@@ -6,16 +6,26 @@ import rentoraLogo from "../../../app/assets/logo.png";
 import { ModeToggle } from "./ModeToggle";
 import ScrollNavWrapper from "./ScrollNavWrapper";
 import MobileActions from "./MobileActions";
-
-import { getLoggedInUser, logOutUser } from "@/lib/core/session";
 import ActiveNavLink from "./ActiveNavLink";
-import { Button } from "@/components/ui/button";
+
+import { getLoggedInUser } from "@/lib/core/session";
+
 import LogOutUser from "../authentication/LogOutUser";
 import { AvatarWithBadge } from "./AvatarWithBadge";
 
 export default async function Navbar() {
   const user = await getLoggedInUser();
-  console.log("log in user", user);
+
+  const role = user?.role?.toLowerCase();
+
+  const dashboardHref =
+    role === "tenant"
+      ? "/dashboard/tenant"
+      : role === "owner"
+        ? "/dashboard/owner"
+        : role === "admin"
+          ? "/dashboard/admin"
+          : null;
 
   const navItems = [
     {
@@ -28,10 +38,11 @@ export default async function Navbar() {
       label: "Properties",
       icon: "properties",
     },
-    ...(user
+
+    ...(dashboardHref
       ? [
           {
-            href: "/dashboard",
+            href: dashboardHref,
             label: "Dashboard",
             icon: "dashboard",
           },
@@ -41,7 +52,7 @@ export default async function Navbar() {
 
   return (
     <ScrollNavWrapper>
-      <header className="flex w-full items-center justify-between gap-4 px-1 md:px-3 ">
+      <header className="flex w-full items-center justify-between gap-4 px-1 md:px-3">
         {/* Logo */}
         <Link
           href="/"
@@ -58,11 +69,11 @@ export default async function Navbar() {
           />
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* Navigation */}
         <nav
           aria-label="Main navigation"
           className="
-           flex items-center gap-1
+            flex items-center gap-1
             rounded-full border border-border/60
             bg-background/60 p-1
             shadow-sm backdrop-blur-md
@@ -78,11 +89,18 @@ export default async function Navbar() {
           ))}
         </nav>
 
-        {/* Right Actions */}
-        <div className="flex lg:flex-row-reverse  shrink-0 items-center gap-2">
+        {/* Actions */}
+        <div className="flex shrink-0 items-center gap-2">
           <ModeToggle />
-          {user ? <LogOutUser></LogOutUser> : <MobileActions />}
-          {user ? <AvatarWithBadge user={user}></AvatarWithBadge> : ""}
+
+          {user ? (
+            <>
+              <LogOutUser />
+              <AvatarWithBadge user={user} />
+            </>
+          ) : (
+            <MobileActions />
+          )}
         </div>
       </header>
     </ScrollNavWrapper>

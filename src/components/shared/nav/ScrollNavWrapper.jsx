@@ -22,9 +22,9 @@ export default function ScrollNavWrapper({ children }) {
     >
       <div
         className={cn(
-          "mx-auto flex items-center justify-between transition-all duration-200 ease-in-out",
+          "mx-auto flex items-center justify-center transition-all duration-200 ease-in-out",
           isScrolled
-            ? "container max-w-container rounded-full border bg-background/60 px-7 py-2 shadow-lg backdrop-blur-md"
+            ? "container fixed flex items-center justify-center  max-w-container rounded-full border bg-background/60 px-7 py-2 shadow-lg backdrop-blur-md"
             : "container bg-background px-2 py-0 shadow-none",
         )}
       >
