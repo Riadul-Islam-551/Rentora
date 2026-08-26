@@ -221,7 +221,7 @@ export default function DashboardSidebar({ user }) {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ==============FOOTER=============================== */}
+      {/* ==============FOOTER============== */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -235,9 +235,8 @@ export default function DashboardSidebar({ user }) {
                 group-data-[collapsible=icon]:justify-center
               "
             >
-              <Link href={`/dashboard/${role}/profile`}>
+              <Link href={`/dashboard/${role}/profile`} className="flex items-center w-full py-2 gap-3 ">
                 <User className="size-4 shrink-0" />
-
                 <span
                   className="
                     group-data-[collapsible=icon]:hidden

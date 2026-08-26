@@ -455,17 +455,8 @@ export default function AddPropertyForm({ user }) {
           event.preventDefault();
           handlePreview();
         }}
-        className="mx-auto w-full max-w-5xl space-y-8"
+        className="mx-auto w-full space-y-8"
       >
-        {/* Header */}
-
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight">Add Property</h1>
-
-          <p className="text-sm text-muted-foreground">
-            Add your property information and images.
-          </p>
-        </div>
 
         {/* Basic Information */}
 
