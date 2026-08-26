@@ -15,7 +15,7 @@ export async function uploadPhoto(file, userId) {
     throw new Error("Only JPG, PNG, and WebP images are allowed.");
   }
 
-  if (file.size > 5 * 1024 * 1024) {
+  if (file.size > 2 * 1024 * 1024) {
     throw new Error("Image must be smaller than 5MB.");
   }
 

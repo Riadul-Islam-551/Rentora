@@ -10,6 +10,7 @@ import { AvatarWithBadge } from "./AvatarWithDropDown";
 
 export default async function Navbar() {
   const user = await getLoggedInUser();
+  console.log("logged in user", user);
 
   const role = user?.role?.toLowerCase();
   // * Get the correct dashboard URL based on the

@@ -73,7 +73,7 @@ const roleLinks = {
     },
     {
       title: "Add Property",
-      href: "/dashboard/owner/newProperty",
+      href: "/dashboard/owner/addProperty",
       icon: FileText,
     },
     {
