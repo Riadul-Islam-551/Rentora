@@ -28,6 +28,8 @@ import {
   Home,
   FileText,
 } from "lucide-react";
+import Image from "next/image";
+import rentoraLogo from "@/app/assets/logo.png";
 
 const roleLinks = {
   tenant: [
@@ -123,6 +125,7 @@ export default function DashboardSidebar({ user }) {
   const links = roleLinks[role] || [];
 
   const isActive = (href) => {
+    // Dashboard must only be active on the exact dashboard route.
     if (
       href === "/dashboard/tenant" ||
       href === "/dashboard/owner" ||
@@ -131,24 +134,53 @@ export default function DashboardSidebar({ user }) {
       return pathname === href;
     }
 
+    // Other links remain active for nested routes.
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <div className="px-2 py-3">
-          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            Rentora
-          </p>
-
-          <h3 className="mt-1 text-lg font-bold capitalize">{role} Panel</h3>
-        </div>
+    <Sidebar collapsible="icon" className="border-r">
+      {/* =================HEADER======================== */}
+      <SidebarHeader className="">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              size="lg"
+              tooltip="Rentora"
+              className="
+                group-data-[collapsible=icon]:size-8!
+                group-data-[collapsible=icon]:p-0!
+                group-data-[collapsible=icon]:justify-center
+              "
+            >
+              <Link href="/" className="flex items-center justify-start gap-2">
+                {/* Logo */}
+                <Image src={rentoraLogo} alt="Go to Home" width={23} height={23}></Image>
+                <div
+                  className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden"
+                >
+                  <span className="truncate text-xs capitalize text-muted-foreground">
+                    {role || "user"} dashboard
+                  </span>
+                </div>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
+      {/* ===========================CONTENT================== */}
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          {/* Hide group title when collapsed */}
+          <SidebarGroupLabel
+            className="
+              group-data-[collapsible=icon]:hidden
+            "
+          >
+            Navigation
+          </SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>
@@ -161,10 +193,19 @@ export default function DashboardSidebar({ user }) {
                       asChild
                       isActive={isActive(item.href)}
                       tooltip={item.title}
+                      className="
+                        group-data-[collapsible=icon]:size-8!
+                        group-data-[collapsible=icon]:p-0!
+                        group-data-[collapsible=icon]:justify-center
+                      "
                     >
-                      <Link href={item.href}>
-                        <Icon />
-                        <span>{item.title}</span>
+                      <Link href={item.href} className="flex items-center gap-3">
+                        <Icon className="size-4 shrink-0" />
+                        <span
+                          className="group-data-[collapsible=icon]:hidden"
+                        >
+                          {item.title}
+                        </span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -175,6 +216,7 @@ export default function DashboardSidebar({ user }) {
         </SidebarGroup>
       </SidebarContent>
 
+      {/* ==============FOOTER=============================== */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -182,10 +224,22 @@ export default function DashboardSidebar({ user }) {
               asChild
               tooltip="Profile"
               isActive={pathname === `/dashboard/${role}/profile`}
+              className="
+                group-data-[collapsible=icon]:size-8!
+                group-data-[collapsible=icon]:p-0!
+                group-data-[collapsible=icon]:justify-center
+              "
             >
               <Link href={`/dashboard/${role}/profile`}>
-                <User />
-                <span>Profile</span>
+                <User className="size-4 shrink-0" />
+
+                <span
+                  className="
+                    group-data-[collapsible=icon]:hidden
+                  "
+                >
+                  Profile
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

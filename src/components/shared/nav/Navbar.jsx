@@ -1,23 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import rentoraLogo from "../../../app/assets/logo.png";
-
 import { ModeToggle } from "./ModeToggle";
 import ScrollNavWrapper from "./ScrollNavWrapper";
 import MobileActions from "./MobileActions";
 import ActiveNavLink from "./ActiveNavLink";
-
 import { getLoggedInUser } from "@/lib/core/session";
-
-import LogOutUser from "../authentication/LogOutUser";
-import { AvatarWithBadge } from "./AvatarWithBadge";
+import { AvatarWithBadge } from "./AvatarWithDropDown";
 
 export default async function Navbar() {
   const user = await getLoggedInUser();
 
   const role = user?.role?.toLowerCase();
-
+  // * Get the correct dashboard URL based on the
   const dashboardHref =
     role === "tenant"
       ? "/dashboard/tenant"
@@ -27,6 +22,7 @@ export default async function Navbar() {
           ? "/dashboard/admin"
           : null;
 
+  /*** Public navigation. */
   const navItems = [
     {
       href: "/",
@@ -39,6 +35,7 @@ export default async function Navbar() {
       icon: "properties",
     },
 
+    // Only logged-in users get Dashboard.
     ...(dashboardHref
       ? [
           {
@@ -52,12 +49,20 @@ export default async function Navbar() {
 
   return (
     <ScrollNavWrapper>
-      <header className="flex w-full items-center justify-between gap-4 px-1 md:px-3">
-        {/* Logo */}
+      <header
+        className="
+          flex w-full items-center justify-between
+          gap-3 px-1 md:px-3
+        "
+      >
+        {/* ===============LOGO=============================== */}
         <Link
           href="/"
           aria-label="Rentora home"
-          className="shrink-0 transition-opacity hover:opacity-80"
+          className="
+            flex shrink-0 items-center
+            transition-opacity hover:opacity-80
+          "
         >
           <Image
             src={rentoraLogo}
@@ -69,14 +74,17 @@ export default async function Navbar() {
           />
         </Link>
 
-        {/* Navigation */}
+        {/* ====================NAVIGATION======================= */}
         <nav
           aria-label="Main navigation"
           className="
             flex items-center gap-1
-            rounded-full border border-border/60
-            bg-background/60 p-1
-            shadow-sm backdrop-blur-md
+            rounded-full
+            border border-border/60
+            bg-background/70
+            p-1
+            shadow-sm
+            backdrop-blur-md
           "
         >
           {navItems.map((item) => (
@@ -89,13 +97,11 @@ export default async function Navbar() {
           ))}
         </nav>
 
-        {/* Actions */}
+        {/* ============= ACTIONS============ */}
         <div className="flex shrink-0 items-center gap-2">
           <ModeToggle />
-
           {user ? (
             <>
-              <LogOutUser />
               <AvatarWithBadge user={user} />
             </>
           ) : (

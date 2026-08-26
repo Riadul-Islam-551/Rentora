@@ -40,8 +40,7 @@ export default function ActiveNavLink({ href, label, icon }) {
       `}
     >
       <Icon className="size-4" />
-
-      <span>{label}</span>
+      <span className="hidden md:block">{label}</span>
     </Link>
   );
 }
