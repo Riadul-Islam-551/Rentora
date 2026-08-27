@@ -84,7 +84,7 @@ export default function ProfileClient({ user }) {
             </h1>
           </div>
 
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" asChild>
             <Link href="/dashboard" className="flex items-center gap-2">
               <ArrowLeft />
               Dashboard
@@ -106,7 +106,7 @@ export default function ProfileClient({ user }) {
           <div
             className="
               absolute inset-x-0 top-0 h-36
-              bg-gradient-to-r
+              bg-linear-to-r
               from-primary/20
               via-info/10
               to-primary/5
