@@ -305,12 +305,6 @@ export default function AddPropertyForm({ user }) {
 
   const handlePreview = () => {
     if (!validateForm()) {
-      toast?.({
-        title: "Please check the form",
-        description: "Complete all required fields before previewing.",
-        variant: "destructive",
-      });
-
       return;
     }
     setPreviewOpen(true);
@@ -476,7 +470,7 @@ export default function AddPropertyForm({ user }) {
                     }
                   />
 
-                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]">
+                  <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
                     {PROPERTY_TYPES.map((type) => (
                       <DropdownMenuItem
                         key={type}
@@ -517,7 +511,7 @@ export default function AddPropertyForm({ user }) {
                     }
                   />
 
-                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]">
+                  <DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width)">
                     {RENT_TYPES.map((type) => (
                       <DropdownMenuItem
                         key={type}
@@ -752,7 +746,7 @@ export default function AddPropertyForm({ user }) {
                       alt={`Gallery image ${index + 1}`}
                       width={500}
                       height={350}
-                      className="aspect-[4/3] w-full object-cover"
+                      className="aspect-4/3 w-full object-cover"
                       unoptimized
                     />
 
@@ -777,7 +771,7 @@ export default function AddPropertyForm({ user }) {
                 {galleryImages.length < MAX_GALLERY_IMAGES && (
                   <label
                     htmlFor="gallery-images"
-                    className="flex aspect-[4/3] cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-muted/20 p-4 text-center transition-colors hover:bg-muted/40"
+                    className="flex aspect-4/3 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-muted/20 p-4 text-center transition-colors hover:bg-muted/40"
                   >
                     <Upload className="mb-2 size-6 text-muted-foreground" />
 
@@ -870,11 +864,7 @@ export default function AddPropertyForm({ user }) {
   );
 }
 
-/*
- * ------------------------------------
- * Small reusable form components
- * ------------------------------------
- */
+/*Small reusable form components*/
 
 function FormField({ label, required, error, children }) {
   return (

@@ -45,7 +45,7 @@ const OwnerPropertyPage = async () => {
         </div>
 
         <Button asChild>
-          <Link href="/dashboard/owner/properties/new">
+          <Link href="/dashboard/owner/addProperty">
             Add Property
           </Link>
         </Button>

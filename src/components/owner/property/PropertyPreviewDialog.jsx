@@ -69,7 +69,7 @@ export default function PropertyPreviewDialog({
                     alt={`Gallery ${index + 1}`}
                     width={600}
                     height={450}
-                    className="aspect-[4/3] w-full rounded-lg border object-cover"
+                    className="aspect-4/3 w-full rounded-lg border object-cover"
                     unoptimized
                   />
                 ))}
