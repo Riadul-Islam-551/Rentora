@@ -11,3 +11,12 @@ export const serverPost = async (path, data) => {
 
   return await res.json();
 };
+
+export const serverFetch = async (path) => {
+  const res = await fetch(`${baseUrl}${path}`);
+  if (!res.ok) {
+    throw new Error(`Request failed: ${res.status}`);
+  }
+
+  return await res.json();
+};
