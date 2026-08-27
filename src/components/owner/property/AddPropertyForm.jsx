@@ -29,6 +29,8 @@ import PropertyPreviewDialog from "./PropertyPreviewDialog";
 import { uploadPropertyPhoto } from "@/lib/core/uploadPropertyPhoto";
 import { useToast } from "@/lib/core/toastContext";
 import { Trash } from "lucide-react";
+import { createProperty } from "@/lib/actions/property";
+import { redirect } from "next/navigation";
 
 const PROPERTY_TYPES = [
   "Apartment",
@@ -75,11 +77,7 @@ export default function AddPropertyForm({ user }) {
 
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  /*
-   * -------------------------
-   * Generic input handler
-   * -------------------------
-   */
+  /*Generic input handler*/
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -95,11 +93,7 @@ export default function AddPropertyForm({ user }) {
     }));
   };
 
-  /*
-   * -------------------------
-   * Banner image
-   * -------------------------
-   */
+  /** Banner image*/
 
   const handleBannerChange = (event) => {
     const file = event.target.files?.[0];
@@ -150,11 +144,7 @@ export default function AddPropertyForm({ user }) {
     }));
   };
 
-  /*
-   * -------------------------
-   * Gallery images
-   * -------------------------
-   */
+  /** Gallery images */
 
   const handleGalleryChange = (event) => {
     const selectedFiles = Array.from(event.target.files || []);
@@ -229,11 +219,7 @@ export default function AddPropertyForm({ user }) {
     }));
   };
 
-  /*
-   * -------------------------
-   * Image validation
-   * -------------------------
-   */
+  /* Image validation*/
 
   const validateImage = (file) => {
     const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
@@ -249,11 +235,7 @@ export default function AddPropertyForm({ user }) {
     return "";
   };
 
-  /*
-   * -------------------------
-   * Form validation
-   * -------------------------
-   */
+  /* Form validation*/
 
   const validateForm = () => {
     const newErrors = {};
@@ -319,11 +301,7 @@ export default function AddPropertyForm({ user }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  /*
-   * -------------------------
-   * Preview
-   * -------------------------
-   */
+  /** Preview*/
 
   const handlePreview = () => {
     if (!validateForm()) {
@@ -335,15 +313,10 @@ export default function AddPropertyForm({ user }) {
 
       return;
     }
-
     setPreviewOpen(true);
   };
 
-  /*
-   * -------------------------
-   * Submit
-   * -------------------------
-   */
+  /** Submit*/
 
   const handleSubmit = async () => {
     if (!validateForm()) {
@@ -352,10 +325,9 @@ export default function AddPropertyForm({ user }) {
     }
 
     if (!user?.id) {
-      toast?.({
-        title: "Authentication required",
-        description: "Could not identify the property owner.",
-        variant: "destructive",
+      toast({
+        message: "Authentication required",
+        type: "error",
       });
 
       return;
@@ -364,89 +336,61 @@ export default function AddPropertyForm({ user }) {
     try {
       setIsUploading(true);
 
-      /*
-       * Upload banner
-       */
+      /*Upload banner */
 
       const bannerUrl = await uploadPropertyPhoto(bannerImage, user.id);
 
-      /*
-       * Upload gallery images
-       *
-       * Promise.all makes sure both gallery images
-       * are uploaded and returned as an array.
-       */
+      /* Upload gallery images*/
 
       const galleryUrls = await Promise.all(
         galleryImages.map((file, index) => uploadPropertyPhoto(file, user.id)),
       );
 
-      /*
-       * Final form data
-       *
-       * Files are replaced with public URLs.
-       */
+      /* Final form data*/
 
       const submittedData = {
         ...form,
-
         ownerId: user.id,
-
         rent: Number(form.rent),
         bedrooms: Number(form.bedrooms),
         bathrooms: Number(form.bathrooms),
         propertySize: Number(form.propertySize),
-
         amenities: form.amenities
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean),
-
         bannerImage: bannerUrl,
-
         galleryImages: galleryUrls,
-
         status: "pending",
       };
+      console.log("property submitted data", submittedData);
 
-      /*
-       * NO BACKEND HERE.
-       *
-       * This is intentionally the only action
-       * after submission.
-       */
+      //property submission
+      const res = await createProperty(submittedData);
+      console.log("response", res);
+      if (res.insertedId) {
+        toast({
+          message: "Property submitted successfully !",
+          type: "success",
+        });
 
-      console.log("========== PROPERTY FORM DATA ==========");
-
-      console.log(submittedData);
-
-      console.log("========================================");
-
-      toast({
-        message: "Property data ready",
-        type: "success",
-      });
-
-      setPreviewOpen(false);
+        setForm(initialForm);
+        removeBanner();
+        galleryPreviews.forEach((url) => URL.revokeObjectURL(url));
+        setGalleryImages([]);
+        setGalleryPreviews([]);
+        setErrors({});
+        setPreviewOpen(false);
+        redirect("/dashboard/owner/properties");
+      }
     } catch (error) {
       console.error("Property submission error:", error);
-
-      toast?.({
-        title: "Upload failed",
-        description:
-          error?.message || "Something went wrong while uploading images.",
-        variant: "destructive",
-      });
     } finally {
       setIsUploading(false);
     }
   };
 
-  /*
-   * -------------------------
-   * UI
-   * -------------------------
-   */
+  /* * UI*/
 
   return (
     <>
@@ -457,7 +401,6 @@ export default function AddPropertyForm({ user }) {
         }}
         className="mx-auto w-full space-y-8"
       >
-
         {/* Basic Information */}
 
         <section className="rounded-xl border bg-card p-5 shadow-sm md:p-6">
