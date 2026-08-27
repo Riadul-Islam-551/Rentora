@@ -21,6 +21,7 @@ const OwnerPropertyPage = async () => {
   const response = await getOwnerProperty(owner.id);
 
   const properties = response?.data || [];
+  console.log("properties", properties)
 
   return (
     <section className="w-full space-y-6">

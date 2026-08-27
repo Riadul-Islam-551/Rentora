@@ -20,3 +20,17 @@ export const serverFetch = async (path) => {
 
   return await res.json();
 };
+
+export const serverDelete = async (path, data) => {
+  const res = await fetch(`${baseUrl}${path}`, {
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  console.log("res delete", res);
+
+  return await res.json();
+};

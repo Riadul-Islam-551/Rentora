@@ -24,6 +24,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import PropertyDetailsDialog from "./PropertyDetailsDialogue";
+import { Trash } from "lucide-react";
+import PropertyDeleteDialogue from "./PropertyDeleteDialogue";
 
 const statusConfig = {
   approved: {
@@ -202,14 +204,12 @@ const PropertyCard = ({ property }) => {
         <PropertyDetailsDialog property={property}></PropertyDetailsDialog>
 
         <Button asChild className="flex-1">
-          <Link
-            href={`/dashboard/owner/properties/${property._id}/edit`}
-            className="flex items-center gap-2"
-          >
-            <Pencil className="size-4" />
-            Edit
-          </Link>
+          <Pencil className="size-4" />
+          Edit
         </Button>
+        <PropertyDeleteDialogue
+          property={property}
+        ></PropertyDeleteDialogue>
       </CardFooter>
     </Card>
   );
