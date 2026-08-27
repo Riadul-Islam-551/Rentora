@@ -23,6 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import PropertyDetailsDialog from "./PropertyDetailsDialogue";
 
 const statusConfig = {
   approved: {
@@ -196,18 +197,15 @@ const PropertyCard = ({ property }) => {
         )}
       </CardContent>
 
-
       {/* Footer */}
       <CardFooter className="flex items-center justify-between gap-2 p-4">
-        <Button asChild variant="outline" className="flex-1">
-          <Link href={`/dashboard/owner/properties/${property._id}`} className="flex items-center gap-2 ">
-            <Eye className="size-4" />
-            View
-          </Link>
-        </Button>
+        <PropertyDetailsDialog property={property}></PropertyDetailsDialog>
 
-        <Button asChild  className="flex-1">
-          <Link href={`/dashboard/owner/properties/${property._id}/edit`} className="flex items-center gap-2"> 
+        <Button asChild className="flex-1">
+          <Link
+            href={`/dashboard/owner/properties/${property._id}/edit`}
+            className="flex items-center gap-2"
+          >
             <Pencil className="size-4" />
             Edit
           </Link>
