@@ -7,3 +7,7 @@ export const getOwnerProperty = async (ownerId, page = 1) => {
 
   return serverFetch(`/api/owner/property?owner=${ownerId}&page=${page}`);
 };
+
+export const getProperty = async (page = 1) => {
+  return serverFetch(`/api/property?page=${page}`);
+};
