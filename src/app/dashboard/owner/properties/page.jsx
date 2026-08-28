@@ -1,11 +1,16 @@
-import PropertyCard from "@/components/reusable/PropertyCard";
+import PropertyEmpty from "@/components/owner/property/PropertyEmpty";
+import PropertyGrid from "@/components/owner/property/PropertyGrid";
+import PropertyStats from "@/components/owner/property/PropertyState";
+import RentoraLoader from "@/components/reusable/RentoraLoader";
+import TotalPage from "@/components/reusable/TotalPage";
 import { Button } from "@/components/ui/button";
 import { getOwnerProperty } from "@/lib/api/property";
 import { getLoggedInUser } from "@/lib/core/session";
 import { Building2 } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
-const OwnerPropertyPage = async () => {
+const OwnerPropertyPage = async ({ searchParams }) => {
   const owner = await getLoggedInUser();
 
   if (!owner) {
@@ -18,10 +23,22 @@ const OwnerPropertyPage = async () => {
     );
   }
 
-  const response = await getOwnerProperty(owner.id);
+  const params = await searchParams;
+
+  const page = Math.max(1, Number(params?.page) || 1);
+
+  const response = await getOwnerProperty(owner.id, page);
 
   const properties = response?.data || [];
-  console.log("properties", properties)
+
+  const pagination = response?.pagination || {
+    currentPage: page,
+    pageSize: 10,
+    totalProperties: 0,
+    totalPages: 0,
+  };
+
+  console.log("properties response:", response);
 
   return (
     <section className="w-full space-y-6">
@@ -31,9 +48,7 @@ const OwnerPropertyPage = async () => {
           <div className="flex items-center gap-2">
             <Building2 className="size-5 text-primary" />
 
-            <p className="text-sm font-medium text-primary">
-              Owner Dashboard
-            </p>
+            <p className="text-sm font-medium text-primary">Owner Dashboard</p>
           </div>
 
           <h1 className="mt-1 text-2xl font-bold tracking-tight md:text-3xl">
@@ -46,101 +61,31 @@ const OwnerPropertyPage = async () => {
         </div>
 
         <Button asChild>
-          <Link href="/dashboard/owner/addProperty">
-            Add Property
-          </Link>
+          <Link href="/dashboard/owner/addProperty">Add Property</Link>
         </Button>
       </div>
 
       {/* Property Stats */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <div className="rounded-xl border bg-card p-4">
-          <p className="text-sm text-muted-foreground">
-            Total Properties
-          </p>
-
-          <p className="mt-1 text-2xl font-bold">
-            {properties.length}
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-card p-4">
-          <p className="text-sm text-muted-foreground">
-            Approved
-          </p>
-
-          <p className="mt-1 text-2xl font-bold text-success">
-            {
-              properties?.filter(
-                (property) =>
-                  property.status?.toLowerCase() === "approved"
-              ).length
-            }
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-card p-4">
-          <p className="text-sm text-muted-foreground">
-            Pending
-          </p>
-
-          <p className="mt-1 text-2xl font-bold text-warning">
-            {
-              properties?.filter(
-                (property) =>
-                  property.status?.toLowerCase() === "pending"
-              ).length
-            }
-          </p>
-        </div>
-
-        <div className="rounded-xl border bg-card p-4">
-          <p className="text-sm text-muted-foreground">
-            Rejected
-          </p>
-
-          <p className="mt-1 text-2xl font-bold text-error">
-            {
-              properties?.filter(
-                (property) =>
-                  property.status?.toLowerCase() === "rejected"
-              ).length
-            }
-          </p>
-        </div>
-      </div>
+      <PropertyStats
+        properties={properties}
+        totalProperties={pagination.totalProperties}
+      />
 
       {/* Properties */}
       {properties.length === 0 ? (
-        <div className="flex min-h-87.5 flex-col items-center justify-center rounded-xl border border-dashed bg-card/50 p-8 text-center">
-          <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/10">
-            <Building2 className="size-7 text-primary" />
-          </div>
-
-          <h2 className="text-lg font-semibold">
-            No properties yet
-          </h2>
-
-          <p className="mt-1 max-w-md text-sm text-muted-foreground">
-            You haven&apos;t added any rental properties yet. Start by
-            adding your first property.
-          </p>
-
-          <Button asChild className="mt-5">
-            <Link href="/dashboard/owner/properties/new">
-              Add Your First Property
-            </Link>
-          </Button>
-        </div>
+        <PropertyEmpty />
       ) : (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {properties?.map((property) => (
-            <PropertyCard
-              key={property._id}
-              property={property}
-            />
-          ))}
-        </div>
+        <>
+          <Suspense fallback={<RentoraLoader></RentoraLoader>}>
+            <PropertyGrid properties={properties} />
+          </Suspense>
+
+          {/* Pagination */}
+          <TotalPage
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+          />
+        </>
       )}
     </section>
   );

@@ -123,7 +123,7 @@ const PropertyCard = ({ property }) => {
       </CardHeader>
 
       {/* Content */}
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 flex-1">
         {/* Property features */}
         <div className="grid grid-cols-3 divide-x rounded-lg border bg-muted/30 py-3">
           <div className="flex flex-col items-center gap-1 px-2 text-center">
