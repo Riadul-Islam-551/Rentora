@@ -30,6 +30,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import rentoraLogo from "@/app/assets/logo.png";
+import { BookmarkCheck } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 
 const roleLinks = {
   tenant: [
@@ -105,14 +107,14 @@ const roleLinks = {
       icon: Building2,
     },
     {
-      title: "Reports",
-      href: "/dashboard/admin/reports",
-      icon: FileText,
+      title: "Bookings",
+      href: "/dashboard/admin/bookings",
+      icon: BookmarkCheck,
     },
     {
-      title: "Settings",
-      href: "/dashboard/admin/settings",
-      icon: Settings,
+      title: "Transactions",
+      href: "/dashboard/admin/transactions",
+      icon: ArrowLeftRight,
     },
   ],
 };
