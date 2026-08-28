@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { authClient } from "../auth-client";
+import UnauthorizedPage from "@/app/Unauthorized";
 
 export const getLoggedInUser = async () => {
   const session = await auth.api.getSession({
@@ -12,4 +13,27 @@ export const getLoggedInUser = async () => {
 
 export const logOutUser = async () => {
   await authClient.signOut();
+};
+
+export const checkAuthentication = async (requiredRole) => {
+  const user = await getLoggedInUser();
+
+  if (!user) {
+    redirect("/");
+  }
+
+  const loggedInUserRole = user?.role?.toLowerCase();
+  const role = requiredRole?.toLowerCase();
+
+  if (loggedInUserRole !== role) {
+    return {
+      authorized: false,
+      user,
+    };
+  }
+
+  return {
+    authorized: true,
+    user,
+  };
 };
