@@ -10,7 +10,7 @@ const OwnerPropertyPage = async () => {
 
   if (!owner) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
+      <div className="flex min-h-100 items-center justify-center">
         <p className="text-muted-foreground">
           Please login to view your properties.
         </p>
@@ -71,7 +71,7 @@ const OwnerPropertyPage = async () => {
 
           <p className="mt-1 text-2xl font-bold text-success">
             {
-              properties.filter(
+              properties?.filter(
                 (property) =>
                   property.status?.toLowerCase() === "approved"
               ).length
@@ -86,7 +86,7 @@ const OwnerPropertyPage = async () => {
 
           <p className="mt-1 text-2xl font-bold text-warning">
             {
-              properties.filter(
+              properties?.filter(
                 (property) =>
                   property.status?.toLowerCase() === "pending"
               ).length
@@ -101,7 +101,7 @@ const OwnerPropertyPage = async () => {
 
           <p className="mt-1 text-2xl font-bold text-error">
             {
-              properties.filter(
+              properties?.filter(
                 (property) =>
                   property.status?.toLowerCase() === "rejected"
               ).length
@@ -112,7 +112,7 @@ const OwnerPropertyPage = async () => {
 
       {/* Properties */}
       {properties.length === 0 ? (
-        <div className="flex min-h-[350px] flex-col items-center justify-center rounded-xl border border-dashed bg-card/50 p-8 text-center">
+        <div className="flex min-h-87.5 flex-col items-center justify-center rounded-xl border border-dashed bg-card/50 p-8 text-center">
           <div className="mb-4 flex size-14 items-center justify-center rounded-full bg-primary/10">
             <Building2 className="size-7 text-primary" />
           </div>
@@ -134,7 +134,7 @@ const OwnerPropertyPage = async () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {properties.map((property) => (
+          {properties?.map((property) => (
             <PropertyCard
               key={property._id}
               property={property}
