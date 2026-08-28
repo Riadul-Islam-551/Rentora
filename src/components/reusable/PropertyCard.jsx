@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import PropertyDetailsDialog from "./PropertyDetailsDialogue";
 import { Trash } from "lucide-react";
 import PropertyDeleteDialogue from "./PropertyDeleteDialogue";
+import PropertyEditDialogue from "./PropertyEditDialogue";
 
 const statusConfig = {
   approved: {
@@ -65,7 +66,7 @@ const PropertyCard = ({ property }) => {
   return (
     <Card className="group overflow-hidden border-border/70 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
       {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+      <div className="relative aspect-16/10 overflow-hidden bg-muted">
         <Image
           src={property.bannerImage}
           alt={property.title}
@@ -89,7 +90,7 @@ const PropertyCard = ({ property }) => {
         </div>
 
         {/* Bottom image gradient */}
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-black/60 to-transparent" />
 
         <div className="absolute bottom-3 left-3 flex items-center gap-1 text-sm text-white">
           <MapPin className="size-4" />
@@ -202,14 +203,8 @@ const PropertyCard = ({ property }) => {
       {/* Footer */}
       <CardFooter className="flex items-center justify-between gap-2 p-4">
         <PropertyDetailsDialog property={property}></PropertyDetailsDialog>
-
-        <Button asChild className="flex-1">
-          <Pencil className="size-4" />
-          Edit
-        </Button>
-        <PropertyDeleteDialogue
-          property={property}
-        ></PropertyDeleteDialogue>
+        <PropertyEditDialogue property={property}></PropertyEditDialogue>
+        <PropertyDeleteDialogue property={property}></PropertyDeleteDialogue>
       </CardFooter>
     </Card>
   );
