@@ -5,5 +5,5 @@ export const getOwnerProperty = async (ownerId, page = 1) => {
     throw new Error("Owner ID is required");
   }
 
-  return serverFetch(`/api/property?owner=${ownerId}&page=${page}`);
+  return serverFetch(`/api/owner/property?owner=${ownerId}&page=${page}`);
 };

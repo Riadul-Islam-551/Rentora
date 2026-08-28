@@ -11,7 +11,7 @@ export const deleteProperty = async (propertyId) => {
     throw new Error("Property ID is required");
   }
 
-  return serverDelete("/api/property", {
+  return serverDelete("/api/delete/property", {
     id: propertyId,
   });
 };
@@ -25,7 +25,7 @@ export async function patchProperty(propertyId, updateProperty) {
     throw new Error("No property data provided");
   }
 
-  return serverPatch("/api/property", {
+  return serverPatch("/api/update/property", {
     id: propertyId,
     ...updateProperty,
   });
