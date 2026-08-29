@@ -190,7 +190,10 @@ export default function PropertyEditDialogue({ property }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button className="flex-1">
+          <Button
+            disabled={property?.status?.toLowerCase() === "rejected"}
+            className="flex-1"
+          >
             <Pencil className="size-4" />
             Edit
           </Button>
@@ -454,7 +457,8 @@ export default function PropertyEditDialogue({ property }) {
                         : property.bannerImage
                     }
                     alt={property.title}
-                    width={300} height={100}
+                    width={300}
+                    height={100}
                     className="h-52 w-full object-cover"
                   />
                 </div>
@@ -500,7 +504,8 @@ export default function PropertyEditDialogue({ property }) {
                         <Image
                           src={image}
                           alt={`Gallery ${index + 1}`}
-                          width={150} height={80}
+                          width={150}
+                          height={80}
                           className="aspect-square w-full object-cover"
                         />
                       </div>

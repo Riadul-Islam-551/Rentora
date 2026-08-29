@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 import {
@@ -12,11 +11,15 @@ import {
   Trash2,
   Calendar,
 } from "lucide-react";
-import { Check } from "lucide-react";
-import { X } from "lucide-react";
 import PropertyDeleteDialogue from "../reusable/PropertyDeleteDialogue";
+import { PropertyApproveDialogue } from "../reusable/PropertyApproveDialogue";
+import { PropertyRejectDialogue } from "../reusable/PropertyRejectDialogue";
+import { getLoggedInUser } from "@/lib/core/session";
+import { Button } from "../ui/button";
 
-const PropertyGrid = ({ properties = [] }) => {
+const PropertyGrid = async ({ properties = [] }) => {
+  const user = await getLoggedInUser();
+  console.log(user);
   const getStatusBadge = (status) => {
     switch (status?.toLowerCase()) {
       case "approved":
@@ -113,39 +116,6 @@ const PropertyGrid = ({ properties = [] }) => {
                   >
                     {property.title}
                   </h3>
-
-                  {/* Options Menu */}
-                  {/* <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0 -mr-2 -mt-1">
-                        <MoreVertical className="h-4 w-4" />
-                        <span className="sr-only">Actions</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-40">
-                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                      <DropdownMenuItem className="cursor-pointer gap-2">
-                        <Eye className="h-4 w-4" /> View Details
-                      </DropdownMenuItem>
-
-                      {property.status.toLowerCase() === "pending" && (
-                        <>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="cursor-pointer gap-2 text-emerald-600">
-                            <CheckCircle2 className="h-4 w-4" /> Approve
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="cursor-pointer gap-2 text-rose-600">
-                            <XCircle className="h-4 w-4" /> Reject
-                          </DropdownMenuItem>
-                        </>
-                      )}
-
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="cursor-pointer gap-2 text-destructive focus:text-destructive">
-                        <Trash2 className="h-4 w-4" /> Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu> */}
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -178,7 +148,7 @@ const PropertyGrid = ({ properties = [] }) => {
 
             {/* Bottom Price & Approval Action Footer */}
             <div className="mt-4 border-t pt-3 space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="">
                 <div>
                   <span className="text-xs text-muted-foreground block">
                     Rent
@@ -202,27 +172,32 @@ const PropertyGrid = ({ properties = [] }) => {
 
               {/* Quick Action Buttons for Pending Items */}
               {property.status.toLowerCase() === "pending" && (
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full h-8 text-xs text-success border-success/30 hover:bg-success/20 hover:text-success"
-                  >
-                    <Check /> Approve
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full h-8 text-xs text-error border-error/30 hover:bg-error/20 hover:text-error"
-                  >
-                    <X />
-                    Reject
-                  </Button>
+                <div className="flex items-center justify-around  gap-2 ">
+                  <PropertyApproveDialogue
+                    property={property}
+                  ></PropertyApproveDialogue>
+                  <PropertyRejectDialogue
+                    property={property}
+                    user={user}
+                  ></PropertyRejectDialogue>
                 </div>
               )}
               {property.status.toLowerCase() === "approved" && (
                 <div className="w-full ">
-                  <PropertyDeleteDialogue property={property}></PropertyDeleteDialogue>
+                  <PropertyDeleteDialogue
+                    property={property}
+                  ></PropertyDeleteDialogue>
+                </div>
+              )}
+              {property.status.toLowerCase() === "rejected" && (
+                <div className="w-full ">
+                  <Button
+                    disabled
+                    className="w-full border-error/50 text-error bg-error/10"
+                    variant="outline"
+                  >
+                    Rejected
+                  </Button>
                 </div>
               )}
             </div>

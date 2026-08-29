@@ -58,7 +58,11 @@ export default function PropertyDeleteDialogue({ property }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button variant="destructive" className="flex-1 w-full gap-2">
+          <Button
+            disabled={property?.status?.toLowerCase() === "rejected"}
+            variant="destructive"
+            className="flex-1 w-full gap-2"
+          >
             <Trash2 className="size-4" />
             Delete
           </Button>

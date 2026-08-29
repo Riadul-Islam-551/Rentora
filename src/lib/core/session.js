@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { authClient } from "../auth-client";
-import UnauthorizedPage from "@/app/Unauthorized";
 
 export const getLoggedInUser = async () => {
   const session = await auth.api.getSession({
