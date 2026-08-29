@@ -1,6 +1,8 @@
 import React from "react";
 import { UserRound } from "lucide-react";
 import Image from "next/image";
+import { Button } from "../ui/button";
+import { UpdateUserRoleDialogue } from "./UpdateUserRoleDialogue";
 
 const UserTable = ({ users = [] }) => {
   const getInitials = (name) => {
@@ -24,7 +26,7 @@ const UserTable = ({ users = [] }) => {
         return "bg-success/10 text-success border-success/20";
 
       case "tenant":
-        return "bg-info/10 text-info border-info/20";
+        return "bg-warning/10 text-warning border-warning/20";
 
       default:
         return "bg-muted text-muted-foreground border-border";
@@ -61,22 +63,7 @@ const UserTable = ({ users = [] }) => {
           DESKTOP / LARGE SCREEN TABLE-STYLE HEADER
           ===================================================== */}
 
-      <div
-        className="
-          hidden
-          lg:grid
-          lg:grid-cols-[2fr_2fr_1fr_1.5fr_1.5fr_1.3fr]
-          items-center
-          gap-4
-          rounded-t-xl
-          bg-muted 
-          px-5
-          py-3
-          text-sm
-          font-semibold
-          text-muted-foreground
-        "
-      >
+      <div className="hidden lg:grid lg:grid-cols-[2fr_2fr_1fr_1.5fr_1.5fr_1.3fr] items-center gap-4 rounded-t-xl bg-muted border border-b-0 px-5 py-3 text-sm font-semibold text-muted-foreground text-center ">
         <div>User</div>
         <div>Email</div>
         <div>Role</div>
@@ -138,7 +125,8 @@ const UserTable = ({ users = [] }) => {
                   <Image
                     src={user.image}
                     alt={user.name || "User"}
-                    width={100} height={100}
+                    width={100}
+                    height={100}
                     className="size-full object-cover"
                   />
                 ) : (
@@ -167,7 +155,7 @@ const UserTable = ({ users = [] }) => {
 
             {/* ROLE */}
 
-            <div>
+            <div className="flex flex-col gap-2 items-center justify-center">
               <span
                 className={`
                   inline-flex
@@ -178,11 +166,12 @@ const UserTable = ({ users = [] }) => {
                   text-xs
                   font-medium
                   capitalize
-                  ${getRoleClass(user.role)}
+                  ${getRoleClass(user?.role)}
                 `}
               >
-                {user.role || "Unknown"}
+                {user?.role || "Unknown"}
               </span>
+              <UpdateUserRoleDialogue user={user}></UpdateUserRoleDialogue>
             </div>
 
             {/* MOBILE */}
@@ -247,7 +236,7 @@ const UserTable = ({ users = [] }) => {
               RESPONSIVE USER CARD
               ================================================= */}
 
-          <div className="lg:hidden p-4 sm:p-5 m-2 ">
+          <div className="lg:hidden p-4 sm:p-5">
             {/* User heading */}
 
             <div className="flex items-start gap-3 border-b pb-4">
@@ -270,7 +259,8 @@ const UserTable = ({ users = [] }) => {
                   <Image
                     src={user.image}
                     alt={user.name || "User"}
-                    width={100} height={100}
+                    width={100}
+                    height={100}
                     className="size-full object-cover"
                   />
                 ) : (
@@ -290,8 +280,9 @@ const UserTable = ({ users = [] }) => {
 
               {/* Role */}
 
-              <span
-                className={`
+              <div className="flex flex-col items-center justify-center gap-2">
+                <span
+                  className={`
                   shrink-0
                   rounded-full
                   border
@@ -300,11 +291,13 @@ const UserTable = ({ users = [] }) => {
                   text-xs
                   font-medium
                   capitalize
-                  ${getRoleClass(user.role)}
+                  ${getRoleClass(user?.role)}
                 `}
-              >
-                {user.role || "Unknown"}
-              </span>
+                >
+                  {user?.role || "Unknown"}
+                </span>
+                <UpdateUserRoleDialogue user={user}></UpdateUserRoleDialogue>
+              </div>
             </div>
 
             {/* Information */}

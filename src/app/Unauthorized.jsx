@@ -35,7 +35,7 @@ export default function UnauthorizedPage() {
         {/* Action Buttons */}
         <div className="mt-8 flex flex-col gap-3">
           <Link
-            href="/login"
+            href="#"
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-ring"
           >
             <KeyRound className="h-4 w-4" />
