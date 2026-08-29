@@ -2,51 +2,56 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import {
   Building2,
   MapPin,
   Bed,
   Bath,
   Maximize2,
-  MoreVertical,
-  Eye,
-  CheckCircle2,
-  XCircle,
   Trash2,
   Calendar,
 } from "lucide-react";
+import { Check } from "lucide-react";
+import { X } from "lucide-react";
+import PropertyDeleteDialogue from "../reusable/PropertyDeleteDialogue";
 
 const PropertyGrid = ({ properties = [] }) => {
   const getStatusBadge = (status) => {
     switch (status?.toLowerCase()) {
       case "approved":
         return (
-          <Badge variant="outline" className="bg-emerald-50 text-emerald-700 border-emerald-200 capitalize">
+          <Badge
+            variant="outline"
+            className="bg-emerald-50 text-emerald-700 border-emerald-200 capitalize"
+          >
             Approved
           </Badge>
         );
       case "pending":
         return (
-          <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200 capitalize animate-pulse">
+          <Badge
+            variant="outline"
+            className="bg-amber-50 text-amber-700 border-amber-200 capitalize animate-pulse"
+          >
             Pending
           </Badge>
         );
       case "rejected":
         return (
-          <Badge variant="outline" className="bg-rose-50 text-rose-700 border-rose-200 capitalize">
+          <Badge
+            variant="outline"
+            className="bg-rose-50 text-rose-700 border-rose-200 capitalize"
+          >
             Rejected
           </Badge>
         );
       default:
-        return <Badge variant="secondary" className="capitalize">{status}</Badge>;
+        return (
+          <Badge variant="secondary" className="capitalize">
+            {status}
+          </Badge>
+        );
     }
   };
 
@@ -55,7 +60,9 @@ const PropertyGrid = ({ properties = [] }) => {
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-12 text-center bg-card">
         <Building2 className="h-10 w-10 text-muted-foreground mb-3" />
         <h3 className="font-semibold text-lg">No Properties Found</h3>
-        <p className="text-sm text-muted-foreground">There are currently no property listings to display.</p>
+        <p className="text-sm text-muted-foreground">
+          There are currently no property listings to display.
+        </p>
       </div>
     );
   }
@@ -84,7 +91,7 @@ const PropertyGrid = ({ properties = [] }) => {
                     <Building2 className="h-8 w-8 text-muted-foreground" />
                   </div>
                 )}
-                
+
                 {/* Floating Badges */}
                 <div className="absolute top-3 left-3 flex items-center gap-2">
                   {getStatusBadge(property.status)}
@@ -106,7 +113,7 @@ const PropertyGrid = ({ properties = [] }) => {
                   >
                     {property.title}
                   </h3>
-                  
+
                   {/* Options Menu */}
                   {/* <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -159,7 +166,10 @@ const PropertyGrid = ({ properties = [] }) => {
                   <span>{property.bathrooms} Baths</span>
                 </div>
                 <div className="h-3 w-px bg-border" />
-                <div className="flex items-center gap-1.5" title="Property Size">
+                <div
+                  className="flex items-center gap-1.5"
+                  title="Property Size"
+                >
                   <Maximize2 className="h-3 w-3 text-foreground" />
                   <span>{property.propertySize} sqft</span>
                 </div>
@@ -170,7 +180,9 @@ const PropertyGrid = ({ properties = [] }) => {
             <div className="mt-4 border-t pt-3 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-muted-foreground block">Rent</span>
+                  <span className="text-xs text-muted-foreground block">
+                    Rent
+                  </span>
                   <span className="text-lg font-bold text-foreground">
                     ৳{property.rent?.toLocaleString()}
                     <span className="text-xs font-normal text-muted-foreground">
@@ -194,17 +206,23 @@ const PropertyGrid = ({ properties = [] }) => {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="w-full h-8 text-xs text-emerald-600 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                    className="w-full h-8 text-xs text-success border-success/30 hover:bg-success/20 hover:text-success"
                   >
-                    Approve
+                    <Check /> Approve
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
-                    className="w-full h-8 text-xs text-rose-600 border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+                    className="w-full h-8 text-xs text-error border-error/30 hover:bg-error/20 hover:text-error"
                   >
+                    <X />
                     Reject
                   </Button>
+                </div>
+              )}
+              {property.status.toLowerCase() === "approved" && (
+                <div className="w-full ">
+                  <PropertyDeleteDialogue property={property}></PropertyDeleteDialogue>
                 </div>
               )}
             </div>
