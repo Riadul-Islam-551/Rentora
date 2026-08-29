@@ -172,7 +172,7 @@ const PropertyGrid = async ({ properties = [] }) => {
 
               {/* Quick Action Buttons for Pending Items */}
               {property.status.toLowerCase() === "pending" && (
-                <div className="flex items-center justify-around  gap-2 ">
+                <div className="flex items-center  gap-2 ">
                   <PropertyApproveDialogue
                     property={property}
                   ></PropertyApproveDialogue>

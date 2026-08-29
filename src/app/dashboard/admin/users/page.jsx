@@ -1,11 +1,27 @@
-import React from 'react'
+import React from "react";
+import { getAllUsers } from "@/lib/api/users";
+import UserTable from "@/components/admin/UserTable";
 
-const UserPage = () => {
+const UserPage = async () => {
+  const userRes = await getAllUsers();
+
+  const users = userRes?.data || [];
+
   return (
-    <div>
-      <h1>user page</h1>
-    </div>
-  )
-}
+    <div className="w-full min-w-0">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold">
+          Users
+        </h1>
 
-export default UserPage
+        <p className="mt-1 text-sm text-muted-foreground">
+          Manage and view all registered users.
+        </p>
+      </div>
+
+      <UserTable users={users} />
+    </div>
+  );
+};
+
+export default UserPage;

@@ -110,16 +110,18 @@ export function PropertyRejectDialogue({ property, user }) {
         }
       }}
     >
-      <DialogTrigger asChild>
-        <Button
-          size="sm"
-          variant="outline"
-          className="h-8 flex-1 w-full text-xs text-error border-error/30 hover:bg-error/20 hover:text-error"
-        >
-          <X className="size-4" />
-          Reject
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 flex-1 w-full text-xs text-error border-error/30 hover:bg-error/20 hover:text-error"
+          >
+            <X className="size-4" />
+            Reject
+          </Button>
+        }
+      />
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>

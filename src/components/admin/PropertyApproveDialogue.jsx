@@ -59,16 +59,18 @@ export function PropertyApproveDialogue({ property }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          size="sm"
-          variant="outline"
-          className="h-8 flex-1 w-full text-xs text-success border-success/30 hover:bg-success/20 hover:text-success"
-        >
-          <Check className="size-4" />
-          Approve
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 w-full flex-1 text-xs text-success border-success/30 hover:bg-success/20 hover:text-success"
+          >
+            <Check className="size-4" />
+            Approve
+          </Button>
+        }
+      />
 
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
