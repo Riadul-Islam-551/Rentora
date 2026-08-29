@@ -27,6 +27,7 @@ import PropertyDetailsDialog from "./PropertyDetailsDialogue";
 import { Trash } from "lucide-react";
 import PropertyDeleteDialogue from "./PropertyDeleteDialogue";
 import PropertyEditDialogue from "./PropertyEditDialogue";
+import { RejectionDetailsDialogue } from "./RejectionDetailsDialogue";
 
 const statusConfig = {
   approved: {
@@ -200,11 +201,24 @@ const PropertyCard = ({ property }) => {
         )}
       </CardContent>
 
-      {/* Footer */}
-      <CardFooter className="flex items-center justify-between gap-2 p-4">
-        <PropertyDetailsDialog property={property}></PropertyDetailsDialog>
-        <PropertyEditDialogue property={property}></PropertyEditDialogue>
-        <PropertyDeleteDialogue property={property}></PropertyDeleteDialogue>
+      {/* footer */}
+      <CardFooter className="flex items-center flex-wrap  gap-2 p-4">
+        {" "}
+        <PropertyDetailsDialog property={property} />
+        {(property?.status?.toLowerCase() === "pending" ||
+          property?.status?.toLowerCase() === "approved") && (
+          <>
+            <PropertyEditDialogue property={property} />
+            <PropertyDeleteDialogue property={property} />
+          </>
+        )}
+        {property?.status?.toLowerCase() === "rejected" && (
+          <>
+            <RejectionDetailsDialogue
+              property={property}
+            ></RejectionDetailsDialogue>
+          </>
+        )}
       </CardFooter>
     </Card>
   );

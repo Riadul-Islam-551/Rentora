@@ -1,4 +1,4 @@
-import PropertyCard from "@/components/reusable/PropertyCard";
+import PropertyCard from "@/components/owner/property/PropertyCard";
 
 
 const PropertyGrid = ({ properties }) => {

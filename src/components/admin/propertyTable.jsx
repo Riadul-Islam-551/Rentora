@@ -11,9 +11,9 @@ import {
   Trash2,
   Calendar,
 } from "lucide-react";
-import PropertyDeleteDialogue from "../reusable/PropertyDeleteDialogue";
-import { PropertyApproveDialogue } from "../reusable/PropertyApproveDialogue";
-import { PropertyRejectDialogue } from "../reusable/PropertyRejectDialogue";
+import PropertyDeleteDialogue from "../owner/property/PropertyDeleteDialogue";
+import { PropertyApproveDialogue } from "./PropertyApproveDialogue";
+import { PropertyRejectDialogue } from "./PropertyRejectDialogue";
 import { getLoggedInUser } from "@/lib/core/session";
 import { Button } from "../ui/button";
 
