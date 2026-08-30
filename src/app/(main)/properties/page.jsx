@@ -1,17 +1,25 @@
-import PropertyGrid from "@/components/owner/property/PropertyGrid";
-import { getProperty } from "@/lib/api/property";
 import React from "react";
-import PropertyFilters from "./PropertyFilters";
+
+import { getProperty } from "@/lib/api/property";
+
+import PropertyGrid from "@/components/owner/property/PropertyGrid";
+import PropertyFilters from "../../../components/reusable/PropertyFilters";
 import TotalPage from "@/components/reusable/TotalPage";
+import { Suspense } from "react";
+import RentoraLoader from "@/components/reusable/RentoraLoader";
 
 const PropertyPage = async ({ searchParams }) => {
   const params = await searchParams;
 
   const page = Math.max(1, Number(params?.page) || 1);
 
-  const search = params?.search || "";
-  const propertyType = params?.propertyType || "";
-  const sortPrice = params?.sortPrice || "";
+  const search = typeof params?.search === "string" ? params.search : "";
+
+  const propertyType =
+    typeof params?.propertyType === "string" ? params.propertyType : "";
+
+  const sortPrice =
+    typeof params?.sortPrice === "string" ? params.sortPrice : "";
 
   const response = await getProperty({
     page,
@@ -29,10 +37,10 @@ const PropertyPage = async ({ searchParams }) => {
     totalPages: 0,
   };
 
-  console.log("properties response:", response);
-
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto mt-9 mb-24  min-w-0 space-y-6">
+      {/* Header */}
+
       <div>
         <h1 className="text-2xl font-bold">Properties</h1>
 
@@ -41,15 +49,22 @@ const PropertyPage = async ({ searchParams }) => {
         </p>
       </div>
 
-      {/* Your filter component goes here */}
-      <PropertyFilters></PropertyFilters>
+      {/* Filters */}
 
-      {/* Your PropertyGrid */}
-      <PropertyGrid properties={properties} />
+      <PropertyFilters />
+
+      {/* Properties */}
+      <Suspense fallback={<RentoraLoader></RentoraLoader>}>
+        {" "}
+        <PropertyGrid properties={properties} />
+      </Suspense>
+
+      {/* Pagination */}
+
       <TotalPage
-        currentPage={pagination?.currentPage}
-        totalPages={pagination?.totalPages}
-      ></TotalPage>
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+      />
     </div>
   );
 };
