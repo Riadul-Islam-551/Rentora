@@ -41,25 +41,25 @@ const roleLinks = {
       icon: LayoutDashboard,
     },
     {
-      title: "My Rentals",
-      href: "/dashboard/tenant/rentals",
-      icon: Home,
-    },
-    {
-      title: "Saved Properties",
-      href: "/dashboard/tenant/saved",
+      title: "Favorite",
+      href: "/dashboard/tenant/favorite",
       icon: Heart,
     },
     {
-      title: "Bookings",
+      title: "My Bookings",
       href: "/dashboard/tenant/bookings",
       icon: CalendarDays,
     },
-    {
-      title: "Payments",
-      href: "/dashboard/tenant/payments",
-      icon: CreditCard,
-    },
+    // {
+    //   title: "Bookings",
+    //   href: "/dashboard/tenant/bookings",
+    //   icon: CalendarDays,
+    // },
+    // {
+    //   title: "Payments",
+    //   href: "/dashboard/tenant/payments",
+    //   icon: CreditCard,
+    // },
   ],
 
   owner: [
