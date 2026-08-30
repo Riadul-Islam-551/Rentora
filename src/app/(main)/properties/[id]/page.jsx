@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import {
   ArrowLeft,
@@ -25,7 +25,10 @@ import FavoriteButton from "@/components/tenant/FavoriteButton";
 const PropertyDetails = async ({ params }) => {
   const { id } = await params;
   const tenant = await getLoggedInUser();
-  console.log("tenant",tenant?.id);
+  console.log("tenant", tenant?.id);
+  if (!tenant?.id) {
+    return redirect("/")
+  }
 
   let response;
 
@@ -297,7 +300,7 @@ const PropertyDetails = async ({ params }) => {
               )}
 
               {/* Contact */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <Button className="flex-1" size="lg">
                   <TicketCheck className="size-4" />
                   Book the property
