@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,103 +16,57 @@ import {
 
 const PropertyFilters = () => {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  /*
-   * Get current URL values
-   */
-  const urlSearch = searchParams.get("search") || "";
-  const propertyType = searchParams.get("propertyType") || "";
-  const sortPrice = searchParams.get("sortPrice") || "";
+  const initialSearch = searchParams.get("search") || "";
+  const initialPropertyType = searchParams.get("propertyType") || "";
+  const initialSortPrice = searchParams.get("sortPrice") || "";
 
-  /*
-   * Local state is only needed for the search input.
-   */
-  const [search, setSearch] = useState(urlSearch);
+  const [search, setSearch] = useState(initialSearch);
+  const [propertyType, setPropertyType] = useState(initialPropertyType);
+  const [sortPrice, setSortPrice] = useState(initialSortPrice);
 
-  /*
-   * Create a stable string representation of
-   * the current query parameters.
-   */
-  const currentQuery = searchParams.toString();
+  const handleSearch = () => {
+    const params = new URLSearchParams();
 
-  /*
-   * Debounced search
-   */
-  useEffect(() => {
     const trimmedSearch = search.trim();
 
-    /*
-     * Don't update the URL when the input
-     * already matches the URL.
-     */
-    if (trimmedSearch === urlSearch) {
-      return;
+    if (trimmedSearch) {
+      params.set("search", trimmedSearch);
     }
 
-    const timer = setTimeout(() => {
-      const params = new URLSearchParams(currentQuery);
-
-      if (trimmedSearch) {
-        params.set("search", trimmedSearch);
-      } else {
-        params.delete("search");
-      }
-
-      /*
-       * Search/filter changes should always
-       * start from page 1.
-       */
-      params.delete("page");
-
-      const query = params.toString();
-
-      router.push(query ? `${pathname}?${query}` : pathname);
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [search, urlSearch, currentQuery, pathname, router]);
-
-  /*
-   * Update select filters immediately.
-   */
-  const updateFilter = (key, value) => {
-    const params = new URLSearchParams(currentQuery);
-
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
+    if (propertyType) {
+      params.set("propertyType", propertyType);
     }
 
-    /*
-     * Reset pagination whenever a filter changes.
-     */
-    params.delete("page");
+    if (sortPrice) {
+      params.set("sortPrice", sortPrice);
+    }
+
+    params.set("page", "1");
 
     const query = params.toString();
 
-    router.push(query ? `${pathname}?${query}` : pathname);
+    router.push(`/properties?${query}`);
   };
 
-  /*
-   * Clear all filters.
-   */
   const clearFilters = () => {
     setSearch("");
-    router.push(pathname);
+    setPropertyType("");
+    setSortPrice("");
+
+    router.push("/properties");
   };
 
   const hasFilters =
     Boolean(search.trim()) || Boolean(propertyType) || Boolean(sortPrice);
 
   return (
-    <div className="flex w-full flex-col gap-3 rounded-xl border bg-card p-4 md:flex-row md:items-center">
-      <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-4">
-        {/* Search */}
+    <div className="w-full rounded-xl border bg-card p-4">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
+        {/* ==========SEARCH============== */}
 
-        <div className="w-full md:col-span-2">
+        <div className="w-full lg:col-span-2">
           <Input
             type="search"
             placeholder="Search by title or location..."
@@ -121,63 +75,60 @@ const PropertyFilters = () => {
           />
         </div>
 
-        {/* Property Type */}
+        {/* ====================PROPERTY TYPE============== */}
 
-        <Select
-          value={propertyType}
-          onValueChange={(value) => updateFilter("propertyType", value)}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="All Property Types" />
-          </SelectTrigger>
+        <div className="w-full">
+          <Select value={propertyType} onValueChange={setPropertyType}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="All Property Types" />
+            </SelectTrigger>
 
-          <SelectContent>
-            <SelectItem value="Apartment">Apartment</SelectItem>
+            <SelectContent>
+              <SelectItem value="Apartment">Apartment</SelectItem>
 
-            <SelectItem value="House">House</SelectItem>
+              <SelectItem value="House">House</SelectItem>
 
-            <SelectItem value="Triplex">Triplex</SelectItem>
+              <SelectItem value="Triplex">Triplex</SelectItem>
 
-            <SelectItem value="Duplex">Duplex</SelectItem>
+              <SelectItem value="Duplex">Duplex</SelectItem>
 
-            <SelectItem value="Villa">Villa</SelectItem>
+              <SelectItem value="Villa">Villa</SelectItem>
 
-            <SelectItem value="Commercial">Commercial</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {/* Price */}
-
-        <Select
-          value={sortPrice}
-          onValueChange={(value) => updateFilter("sortPrice", value)}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Sort by Price" />
-          </SelectTrigger>
-
-          <SelectContent>
-            <SelectItem value="asc">Price: Low to High</SelectItem>
-
-            <SelectItem value="desc">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Clear Filters */}
-
-      {hasFilters && (
-        <div>
-          <Button
-            className="w-full md:w-auto"
-            variant="outline"
-            size="sm"
-            onClick={clearFilters}
-          >
-            Clear Filters
-          </Button>
+              <SelectItem value="Commercial">Commercial</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-      )}
+
+        {/* ==================PRICE=============== */}
+
+        <div className="w-full">
+          <Select value={sortPrice} onValueChange={setSortPrice}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Sort by Price" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="asc">Price: Low to High</SelectItem>
+
+              <SelectItem value="desc">Price: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* =============SEARCH BUTTON========== */}
+
+        <div className="flex w-full gap-2">
+          <Button type="button" className="flex-1" onClick={handleSearch}>
+            Search
+          </Button>
+
+          {hasFilters && (
+            <Button type="button" variant="outline" onClick={clearFilters}>
+              Clear
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

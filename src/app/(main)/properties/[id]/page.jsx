@@ -27,7 +27,7 @@ const PropertyDetails = async ({ params }) => {
   const tenant = await getLoggedInUser();
   console.log("tenant", tenant?.id);
   if (!tenant?.id) {
-    return redirect("/")
+    return redirect("/");
   }
 
   let response;
@@ -73,8 +73,8 @@ const PropertyDetails = async ({ params }) => {
     <div className="container mx-auto min-w-0 space-y-6 px-4 py-6 md:px-6 lg:py-8">
       {/* Back Button */}
       <div>
-        <Button variant="ghost" asChild className="-ml-2">
-          <Link href="/properties">
+        <Button variant="outline" asChild className="-ml-2">
+          <Link href="/properties" className="flex items-center gap-2 ">
             <ArrowLeft className="size-4" />
             Back to Properties
           </Link>
@@ -305,12 +305,11 @@ const PropertyDetails = async ({ params }) => {
                   <TicketCheck className="size-4" />
                   Book the property
                 </Button>
-                {tenant?.role?.toLowerCase() === "tenant" && (
-                  <FavoriteButton
-                    propertyId={property?._id}
-                    tenantId={tenant?.id}
-                  />
-                )}
+
+                <FavoriteButton
+                  propertyId={property?._id}
+                  tenantId={tenant?.id}
+                />
               </div>
             </CardContent>
           </Card>
