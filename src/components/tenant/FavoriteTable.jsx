@@ -2,24 +2,9 @@ import React from "react";
 import Image from "next/image";
 import { Heart } from "lucide-react";
 import { Button } from "../ui/button";
+import DeleteFavorite from "./DeleteFavorite";
 
-const FavoriteTable = ({ properties = [] }) => {
-//   const getStatusClass = (status) => {
-//     switch (status?.toLowerCase()) {
-//       case "approved":
-//         return "bg-success/10 text-success border-success/20";
-
-//       case "pending":
-//         return "bg-warning/10 text-warning border-warning/20";
-
-//       case "rejected":
-//         return "bg-destructive/10 text-destructive border-destructive/20";
-
-//       default:
-//         return "bg-muted text-muted-foreground border-border";
-//     }
-//   };
-
+const FavoriteTable = ({ properties = [], tenant }) => {
   const formatRent = (rent) => {
     if (rent === undefined || rent === null) return "N/A";
 
@@ -34,7 +19,7 @@ const FavoriteTable = ({ properties = [] }) => {
 
   if (!properties.length) {
     return (
-      <div className="flex min-h-[280px] w-full flex-col items-center justify-center rounded-xl border border-dashed bg-card p-6 text-center">
+      <div className="flex min-h-70 w-full flex-col items-center justify-center rounded-xl border border-dashed bg-card p-6 text-center">
         <Heart className="mb-3 size-10 text-muted-foreground" />
 
         <h3 className="text-lg font-semibold">No Favorite Properties</h3>
@@ -148,7 +133,7 @@ const FavoriteTable = ({ properties = [] }) => {
             {/* LOCATION */}
 
             <div className="min-w-0">
-              <p className="break-words text-sm text-muted-foreground">
+              <p className="wrap-break-words text-sm text-muted-foreground">
                 {property.location || "N/A"}
               </p>
             </div>
@@ -184,10 +169,10 @@ const FavoriteTable = ({ properties = [] }) => {
             {/* ACTIONS */}
 
             <div className="flex justify-center">
-              <Button variant="outline" size="xs"
-              >
-                Remove Favorite
-              </Button>
+              <DeleteFavorite
+                propertyId={property?._id}
+                tenantId={tenant?.id}
+              ></DeleteFavorite>
             </div>
           </div>
 
@@ -239,10 +224,10 @@ const FavoriteTable = ({ properties = [] }) => {
               {/* ACTIONS */}
 
               <div className="shrink-0">
-                 <Button variant="outline" size="xs"
-              >
-                Remove Favorite
-              </Button>
+                <DeleteFavorite
+                  propertyId={property?._id}
+                  tenantId={tenant?.id}
+                ></DeleteFavorite>
               </div>
             </div>
 

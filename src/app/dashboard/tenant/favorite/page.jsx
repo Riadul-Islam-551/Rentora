@@ -58,9 +58,9 @@ const FavoritePage = async () => {
       {response?.totalFavorites === 0 ? (
         <FavoriteEmpty />
       ) : (
-        <FavoriteTable properties={favoriteProperties} />
+        <FavoriteTable properties={favoriteProperties} tenant={tenant} />
       )}
-       {/* <PropertyGrid properties={favoriteProperties} /> */}
+      {/* <PropertyGrid properties={favoriteProperties} /> */}
     </section>
   );
 };
