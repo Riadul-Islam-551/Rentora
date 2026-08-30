@@ -7,7 +7,7 @@ export default function Home() {
     <section className="">
       <HeroSection></HeroSection>
       <div className="relative w-full">
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-full max-w-4xl px-3">
+        <div className="absolute -top-7  left-1/2 -translate-x-1/2 w-full max-w-4xl px-3">
           <PropertyFilters></PropertyFilters>
         </div>
       </div>
