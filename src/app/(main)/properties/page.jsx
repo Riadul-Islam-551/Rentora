@@ -21,11 +21,14 @@ const PropertyPage = async ({ searchParams }) => {
   const sortPrice =
     typeof params?.sortPrice === "string" ? params.sortPrice : "";
 
+  const status = typeof params?.status === "string" ? params.status : "";
+
   const response = await getProperty({
     page,
     search,
     propertyType,
     sortPrice,
+    status,
   });
 
   const properties = response?.data || [];
@@ -38,9 +41,7 @@ const PropertyPage = async ({ searchParams }) => {
   };
 
   return (
-    <div className="container mx-auto mt-9 mb-24  min-w-0 space-y-6">
-      {/* Header */}
-
+    <div className="container mx-auto mt-9 mb-24 min-w-0 space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Properties</h1>
 
@@ -49,17 +50,11 @@ const PropertyPage = async ({ searchParams }) => {
         </p>
       </div>
 
-      {/* Filters */}
-
       <PropertyFilters />
 
-      {/* Properties */}
-      <Suspense fallback={<RentoraLoader></RentoraLoader>}>
-        {" "}
+      <Suspense fallback={<RentoraLoader />}>
         <PropertyGrid properties={properties} />
       </Suspense>
-
-      {/* Pagination */}
 
       <TotalPage
         currentPage={pagination.currentPage}

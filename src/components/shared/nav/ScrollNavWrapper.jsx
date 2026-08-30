@@ -28,7 +28,7 @@ export default function ScrollNavWrapper({ children }) {
         "z-50 w-full transition-all duration-300 ease-in-out",
         isScrolled
           ? "fixed inset-x-0 top-0 flex justify-center px-2 pt-2"
-          : "sticky top-0 px-2 py-4 md:py-5",
+          : "sticky top-0 px-2 py-4 md:py-5  bg-primary/10",
       )}
     >
       <div

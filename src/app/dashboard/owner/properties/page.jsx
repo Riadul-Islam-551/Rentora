@@ -27,7 +27,10 @@ const OwnerPropertyPage = async ({ searchParams }) => {
 
   const page = Math.max(1, Number(params?.page) || 1);
 
-  const response = await getOwnerProperty(owner.id, page);
+  const response = await getOwnerProperty({
+    ownerId: owner.id,
+    page,
+  });
 
   const properties = response?.data || [];
 
@@ -38,11 +41,9 @@ const OwnerPropertyPage = async ({ searchParams }) => {
     totalPages: 0,
   };
 
-  console.log("properties response:", response);
-
   return (
     <section className="w-full space-y-6">
-      {/* Page Header */}
+      {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -65,7 +66,7 @@ const OwnerPropertyPage = async ({ searchParams }) => {
         </Button>
       </div>
 
-      {/* Property Stats */}
+      {/* Stats */}
       <PropertyStats
         properties={properties}
         totalProperties={pagination.totalProperties}
@@ -76,7 +77,7 @@ const OwnerPropertyPage = async ({ searchParams }) => {
         <PropertyEmpty />
       ) : (
         <>
-          <Suspense fallback={<RentoraLoader></RentoraLoader>}>
+          <Suspense fallback={<RentoraLoader />}>
             <PropertyGrid properties={properties} />
           </Suspense>
 
