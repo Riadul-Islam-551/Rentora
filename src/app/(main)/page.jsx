@@ -1,5 +1,6 @@
 import FeaturedProperties from "@/components/home/FeaturedProperties";
 import HeroSection from "@/components/home/Hero";
+import TopReviewSection from "@/components/home/TopReviewSection";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import PropertyFilters from "@/components/reusable/PropertyFilters";
 
@@ -14,6 +15,7 @@ export default function Home() {
       </div>
       <FeaturedProperties></FeaturedProperties>
       <WhyChooseUs></WhyChooseUs>
+      <TopReviewSection></TopReviewSection>
     </section>
   );
 }

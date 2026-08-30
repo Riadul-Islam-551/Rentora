@@ -21,6 +21,7 @@ import { Bookmark } from "lucide-react";
 import { TicketCheck } from "lucide-react";
 import { getLoggedInUser } from "@/lib/core/session";
 import FavoriteButton from "@/components/tenant/FavoriteButton";
+import ReviewForm from "@/components/reusable/ReviewForm";
 
 const PropertyDetails = async ({ params }) => {
   const { id } = await params;
@@ -314,6 +315,11 @@ const PropertyDetails = async ({ params }) => {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* review section  */}
+      <div className="mt-4">
+        <ReviewForm propertyId={property?._id} tenantId={tenant?.id} />
       </div>
     </div>
   );
