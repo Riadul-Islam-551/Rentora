@@ -10,7 +10,7 @@ const FeaturedProperties = async () => {
 
   return (
     <section className="pt-56 md:pt-44 lg:pt-24 pb-16 bg-background text-foreground border-b border-border/50">
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12">
           {/* Badge */}

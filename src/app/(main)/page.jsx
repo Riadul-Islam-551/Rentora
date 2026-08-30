@@ -1,5 +1,7 @@
 import FeaturedProperties from "@/components/home/FeaturedProperties";
 import HeroSection from "@/components/home/Hero";
+import RentalStatistics from "@/components/home/RentalStatistics";
+import TopLocations from "@/components/home/TopLocation";
 import TopReviewSection from "@/components/home/TopReviewSection";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import PropertyFilters from "@/components/reusable/PropertyFilters";
@@ -16,6 +18,8 @@ export default function Home() {
       <FeaturedProperties></FeaturedProperties>
       <WhyChooseUs></WhyChooseUs>
       <TopReviewSection></TopReviewSection>
+      <TopLocations></TopLocations>
+      <RentalStatistics></RentalStatistics>
     </section>
   );
 }

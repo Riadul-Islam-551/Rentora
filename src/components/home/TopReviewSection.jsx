@@ -92,7 +92,7 @@ const TopReviewSection = async () => {
 
   return (
     <section className="bg-background py-16 text-foreground transition-colors duration-300">
-      <div className="container mx-auto max-w-7xl px-4">
+      <div className="container mx-auto px-4">
         {/* =================================================
             SECTION HEADER
             ================================================= */}
