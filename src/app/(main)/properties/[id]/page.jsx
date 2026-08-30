@@ -19,9 +19,13 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getPropertyById } from "@/lib/api/property";
 import { Bookmark } from "lucide-react";
 import { TicketCheck } from "lucide-react";
+import { getLoggedInUser } from "@/lib/core/session";
+import FavoriteButton from "@/components/tenant/FavoriteButton";
 
 const PropertyDetails = async ({ params }) => {
   const { id } = await params;
+  const tenant = await getLoggedInUser();
+  console.log("tenant",tenant?.id);
 
   let response;
 
@@ -298,10 +302,12 @@ const PropertyDetails = async ({ params }) => {
                   <TicketCheck className="size-4" />
                   Book the property
                 </Button>
-                <Button variant="outline" className="flex-1" size="lg">
-                  <Bookmark className="size-4" />
-                  Mark as Favorite
-                </Button>
+                {tenant?.role?.toLowerCase() === "tenant" && (
+                  <FavoriteButton
+                    propertyId={property?._id}
+                    tenantId={tenant?.id}
+                  />
+                )}
               </div>
             </CardContent>
           </Card>
