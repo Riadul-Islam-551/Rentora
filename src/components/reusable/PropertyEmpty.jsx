@@ -12,15 +12,8 @@ const PropertyEmpty = () => {
       <h2 className="text-lg font-semibold">No properties yet</h2>
 
       <p className="mt-1 max-w-md text-sm text-muted-foreground">
-        You haven&apos;t added any rental properties yet. Start by adding your
-        first property.
+        There is no available property !
       </p>
-
-      <Button asChild className="mt-5">
-        <Link href="/dashboard/owner/properties/new">
-          Add Your First Property
-        </Link>
-      </Button>
     </div>
   );
 };

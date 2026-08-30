@@ -7,6 +7,7 @@ import PropertyFilters from "../../../components/reusable/PropertyFilters";
 import TotalPage from "@/components/reusable/TotalPage";
 import { Suspense } from "react";
 import RentoraLoader from "@/components/reusable/RentoraLoader";
+import PropertyEmpty from "@/components/reusable/PropertyEmpty";
 
 const PropertyPage = async ({ searchParams }) => {
   const params = await searchParams;
@@ -28,7 +29,7 @@ const PropertyPage = async ({ searchParams }) => {
     search,
     propertyType,
     sortPrice,
-    status,
+    status: "approved",
   });
 
   const properties = response?.data || [];
@@ -52,14 +53,20 @@ const PropertyPage = async ({ searchParams }) => {
 
       <PropertyFilters />
 
-      <Suspense fallback={<RentoraLoader />}>
-        <PropertyGrid properties={properties} />
-      </Suspense>
-
-      <TotalPage
-        currentPage={pagination.currentPage}
-        totalPages={pagination.totalPages}
-      />
+      {properties.length === 0 ? (
+        <PropertyEmpty></PropertyEmpty>
+      ) : (
+        <>
+          {" "}
+          <Suspense fallback={<RentoraLoader />}>
+            <PropertyGrid properties={properties} />
+          </Suspense>
+          <TotalPage
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+          />
+        </>
+      )}
     </div>
   );
 };

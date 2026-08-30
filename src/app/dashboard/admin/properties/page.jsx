@@ -6,7 +6,7 @@ import { getProperty } from "@/lib/api/property";
 import React from "react";
 import { Suspense } from "react";
 
-const PropertyPage = async ({ searchParams }) => {
+const AdminPropertyPage = async ({ searchParams }) => {
   const params = await searchParams;
 
   // -----------------------------
@@ -77,4 +77,4 @@ const PropertyPage = async ({ searchParams }) => {
   );
 };
 
-export default PropertyPage;
+export default AdminPropertyPage;

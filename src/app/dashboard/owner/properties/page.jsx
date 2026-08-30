@@ -1,4 +1,4 @@
-import PropertyEmpty from "@/components/owner/property/PropertyEmpty";
+import PropertyEmpty from "@/components/reusable/PropertyEmpty";
 import PropertyGrid from "@/components/owner/property/PropertyGrid";
 import PropertyStats from "@/components/owner/property/PropertyState";
 import RentoraLoader from "@/components/reusable/RentoraLoader";

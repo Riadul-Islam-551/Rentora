@@ -6,6 +6,14 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 const PropertyFilters = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -100,8 +108,8 @@ const PropertyFilters = () => {
     Boolean(search.trim()) || Boolean(propertyType) || Boolean(sortPrice);
 
   return (
-    <div className="w-full flex flex-col md:flex-row md:items-center  gap-3  rounded-xl border bg-card p-4">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 flex-1 ">
+    <div className="flex w-full flex-col gap-3 rounded-xl border bg-card p-4 md:flex-row md:items-center">
+      <div className="grid flex-1 grid-cols-1 gap-4 md:grid-cols-4">
         {/* Search */}
 
         <div className="w-full md:col-span-2">
@@ -115,70 +123,57 @@ const PropertyFilters = () => {
 
         {/* Property Type */}
 
-        <select
+        <Select
           value={propertyType}
-          onChange={(event) => updateFilter("propertyType", event.target.value)}
-          className="
-            h-10
-            w-full
-            rounded-md
-            border
-            border-input
-            bg-background
-            px-3
-            text-sm
-            outline-none
-            focus:ring-2
-            focus:ring-ring
-          "
+          onValueChange={(value) => updateFilter("propertyType", value)}
         >
-          <option value="">All Property Types</option>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="All Property Types" />
+          </SelectTrigger>
 
-          <option value="Apartment">Apartment</option>
+          <SelectContent>
+            <SelectItem value="Apartment">Apartment</SelectItem>
 
-          <option value="House">House</option>
+            <SelectItem value="House">House</SelectItem>
 
-          <option value="Triplex">Triplex</option>
+            <SelectItem value="Triplex">Triplex</SelectItem>
 
-          <option value="Duplex">Duplex</option>
+            <SelectItem value="Duplex">Duplex</SelectItem>
 
-          <option value="Villa">Villa</option>
+            <SelectItem value="Villa">Villa</SelectItem>
 
-          <option value="Commercial">Commercial</option>
-        </select>
+            <SelectItem value="Commercial">Commercial</SelectItem>
+          </SelectContent>
+        </Select>
 
         {/* Price */}
 
-        <select
+        <Select
           value={sortPrice}
-          onChange={(event) => updateFilter("sortPrice", event.target.value)}
-          className="
-            h-10
-            w-full
-            rounded-md
-            border
-            border-input
-            bg-background
-            px-3
-            text-sm
-            outline-none
-            focus:ring-2
-            focus:ring-ring
-          "
+          onValueChange={(value) => updateFilter("sortPrice", value)}
         >
-          <option value="">Sort by Price</option>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Sort by Price" />
+          </SelectTrigger>
 
-          <option value="asc">Price: Low to High</option>
+          <SelectContent>
+            <SelectItem value="asc">Price: Low to High</SelectItem>
 
-          <option value="desc">Price: High to Low</option>
-        </select>
+            <SelectItem value="desc">Price: High to Low</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Clear Filters */}
 
       {hasFilters && (
-        <div className="">
-          <Button className="w-full md:w-auto" variant="outline" size="sm" onClick={clearFilters}>
+        <div>
+          <Button
+            className="w-full md:w-auto"
+            variant="outline"
+            size="sm"
+            onClick={clearFilters}
+          >
             Clear Filters
           </Button>
         </div>
