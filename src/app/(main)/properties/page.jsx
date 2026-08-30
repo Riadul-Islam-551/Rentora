@@ -1,13 +1,12 @@
 import React from "react";
 
 import { getProperty } from "@/lib/api/property";
-
-import PropertyGrid from "@/components/owner/property/PropertyGrid";
 import PropertyFilters from "../../../components/reusable/PropertyFilters";
 import TotalPage from "@/components/reusable/TotalPage";
 import { Suspense } from "react";
 import RentoraLoader from "@/components/reusable/RentoraLoader";
 import PropertyEmpty from "@/components/reusable/PropertyEmpty";
+import PublicPropertyGrid from "@/components/reusable/PublicPropertyGrid";
 
 const PropertyPage = async ({ searchParams }) => {
   const params = await searchParams;
@@ -57,9 +56,8 @@ const PropertyPage = async ({ searchParams }) => {
         <PropertyEmpty></PropertyEmpty>
       ) : (
         <>
-          {" "}
           <Suspense fallback={<RentoraLoader />}>
-            <PropertyGrid properties={properties} />
+            <PublicPropertyGrid properties={properties} />
           </Suspense>
           <TotalPage
             currentPage={pagination.currentPage}
